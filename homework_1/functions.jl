@@ -38,7 +38,7 @@ function update_walks(walks::Array{Array{UInt64, 1}, 1}, b::Array{UInt64, 1})
     # Input: walks – array with current paths
     #        b – array with steps needed to take
     for i in 1:length(walks)
-        append!(walks[i], walks[i, length(walks[i])] + b[i])
+        append!(walks[i], walks[i][end] + b[i])
     end
 end
 
