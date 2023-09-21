@@ -14,3 +14,20 @@ function generate_random(r::UInt64)::UInt64
     return r_new
 
 end
+
+function extract_bits(r::UInt64)::Array{UInt64, 1}
+    # function that takes a generated number r
+    # and extracts its 64 bits into the Array
+    # Input: r – UInt64 number to extract bits from
+    # Optupt: b – array of length 64 that stores
+    # bits of r as separate elements
+
+    b = Array{UInt64, 1}(undef, 64) # initializing the array
+
+    # iterating over bits
+    for i in 1:64
+        # recording the bits
+        b[i] = (r >>> (i - 1)) & 1
+    end
+    return b
+end
