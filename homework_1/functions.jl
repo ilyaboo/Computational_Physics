@@ -10,7 +10,7 @@ function generate_random(r::UInt64)::UInt64
     # Optupt: r_new – new generated number
 
     # calculating the new number
-    r_new::Int64 = a * r + c
+    r_new::UInt64 = a * r + c
     return r_new
 
 end
