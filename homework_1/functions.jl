@@ -52,20 +52,35 @@ function update_walks_with_seed(walks::Array{Array{Int64, 1}, 1}, seed::UInt64)
     update_walks_with_b(walks, b)
 end
 
-function perform_walks(steps::UInt64, seed::UInt64)::Array{Array{Int64}}
+function perform_walk(steps::UInt64, seed::UInt64)::Array{Array{Int64}}
     # function that takes the number of steps as an argument
-    # and the seed and performs the walks for a given number of steps
+    # and the seed and performs the walk for a given number of steps
     # Input: steps – number of steps in the walk
     #        seed – initial seed of the walks
-    # Output: Array containing all 64 walks
+    # Output: Array containing all 64 bits changes of a walk
 
     # array storing walks
-    walks = [Int64[0] for _ in 1:64]
+    walk = [Int64[0] for _ in 1:64]
 
     for _ in 1:steps
         seed = generate_random(seed)
-        update_walks_with_seed(walks, seed)
+        update_walks_with_seed(walk, seed)
     end
 
-    return walks
+    return walk
+end
+
+function record_walk_results(bit_counts::Vector{Vector{Int64}}, walk::Vector{Vector{Int64}})
+    # function which record the result of the walk into the
+    # bit counts matrix
+    # Input: bit_counts – martix that stores the counts of bits
+    #        walk – walk data that is used to update bit_counts
+
+    # iterating over bits of the walk
+    for i in 1:length(walk)
+
+        # incrementing the corresponding counter
+        bit_counts[i][walk[i][end] + length(walk)] += 1
+
+    end
 end
