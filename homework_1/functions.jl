@@ -83,7 +83,6 @@ function record_walk_results(bit_counts::Vector{Vector{UInt64}}, walk::Vector{Ve
     for i in 1:length(walk)
 
         # incrementing the corresponding counter
-        println(walk[i][end])
         bit_counts[i][walk[i][end] + length(walk)] += 1
 
     end
