@@ -1,3 +1,5 @@
+include("IO_functions.jl")
+
 # parameters of the random number generator
 const a::UInt64 = 2862933555777941757
 const c::UInt64 = 1013904243
@@ -71,13 +73,14 @@ function perform_walk(steps::UInt64, seed::UInt64)::Tuple{Vector{Vector{Int64}},
     return walk, seed
 end
 
-function record_walk_results(bit_counts::Vector{Vector{Int64}}, walk::Vector{Vector{Int64}})
+function record_walk_results(bit_counts::Vector{Vector{UInt64}}, walk::Vector{Vector{Int64}})
     # function which record the result of the walk into the
     # bit counts matrix
     # Input: bit_counts – martix that stores the counts of bits
     #        walk – walk data that is used to update bit_counts
 
     # iterating over bits of the walk
+    println(length(walk))
     for i in 1:length(walk)
 
         # incrementing the corresponding counter
@@ -97,8 +100,8 @@ function run_walks(num_walks::UInt64, num_steps::UInt64, seed::UInt64)::Vector{V
     # creating a bit_counts 2D array with the number of columns equal to 
     # 64 corresponding to 64 bits and 2 * num_steps + 1 rows representing
     # all possible final bit values
-    bit_counts = [zeros(UInt64, 64) for _ in 1:(2 * num_steps + 1)]
-
+    bit_counts = [zeros(UInt64, 2 * num_steps + 1) for _ in 1:64]
+    
     # iterating num_walks times
     for _ in 1:num_walks
 
@@ -109,4 +112,12 @@ function run_walks(num_walks::UInt64, num_steps::UInt64, seed::UInt64)::Vector{V
     end
 
     return bit_counts
+end
+
+function run_all()
+    # helper function that is used to read the inputs,
+    # run the simulations and print the results
+
+    num_walks, num_steps, seed = read_input()
+    println(run_walks(num_walks, num_steps, seed))
 end
