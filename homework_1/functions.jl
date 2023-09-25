@@ -52,9 +52,10 @@ function update_walks_with_seed(walks::Vector{Vector{Int64}}, seed::UInt64)
     update_walks_with_b(walks, b)
 end
 
-function perform_walk(steps::UInt64, seed::UInt64)::Vector{Vector{Int64}}
+function perform_walk(steps::UInt64, seed::UInt64)::Tuple{Vector{Vector{Int64}}, UInt64}
     # function that takes the number of steps as an argument
     # and the seed and performs the walk for a given number of steps
+    # also returns that final seed value that was used
     # Input: steps – number of steps in the walk
     #        seed – initial seed of the walks
     # Output: Array containing all 64 bits changes of a walk
@@ -67,7 +68,7 @@ function perform_walk(steps::UInt64, seed::UInt64)::Vector{Vector{Int64}}
         update_walks_with_seed(walk, seed)
     end
 
-    return walk
+    return walk, seed
 end
 
 function record_walk_results(bit_counts::Vector{Vector{Int64}}, walk::Vector{Vector{Int64}})
@@ -83,4 +84,29 @@ function record_walk_results(bit_counts::Vector{Vector{Int64}}, walk::Vector{Vec
         bit_counts[i][walk[i][end] + length(walk)] += 1
 
     end
+end
+
+function run_walks(num_walks::UInt64, num_steps::UInt64, seed::UInt64)::Vector{Vector{Int64}}
+    # main function which runs all the walks and teturns resultant bit counts
+    # Input: num_walks – number of walks to be performed
+    #        num_steps – number of steps in each walk
+    #        seed – seed that is used for random
+    # Output: bit_counts – 2D array that stores the frequencies of the results
+    #                      of the bit values
+
+    # creating a bit_counts 2D array with the number of columns equal to 
+    # 64 corresponding to 64 bits and 2 * num_steps + 1 rows representing
+    # all possible final bit values
+    bit_counts = [zeros(UInt64, 64) for _ in 1:(2 * num_steps + 1)]
+
+    # iterating num_walks times
+    for _ in 1:num_walks
+
+        # performing the walk, recording the results
+        walk, seed = perform_walk(num_steps, seed)
+        record_walk_results(bit_counts, walk)
+    
+    end
+
+    return bit_counts
 end
