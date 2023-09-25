@@ -32,7 +32,7 @@ function extract_bits(r::UInt64)::Vector{Int64}
     return b
 end
 
-function update_walks_with_b(walks::Vector{Vector{Vector}}, b::Vector{Int64})
+function update_walks_with_b(walks::Vector{Vector{Int64}}, b::Vector{Int64})
     # function that updates the walks provided by the walks array
     # by adding the next values according to the steps arrat b
     # Input: walks – array with current paths
@@ -80,10 +80,10 @@ function record_walk_results(bit_counts::Vector{Vector{UInt64}}, walk::Vector{Ve
     #        walk – walk data that is used to update bit_counts
 
     # iterating over bits of the walk
-    println(length(walk))
     for i in 1:length(walk)
 
         # incrementing the corresponding counter
+        println(walk[i][end])
         bit_counts[i][walk[i][end] + length(walk)] += 1
 
     end
@@ -101,14 +101,13 @@ function run_walks(num_walks::UInt64, num_steps::UInt64, seed::UInt64)::Vector{V
     # 64 corresponding to 64 bits and 2 * num_steps + 1 rows representing
     # all possible final bit values
     bit_counts = [zeros(UInt64, 2 * num_steps + 1) for _ in 1:64]
-    
+
     # iterating num_walks times
     for _ in 1:num_walks
 
         # performing the walk, recording the results
         walk, seed = perform_walk(num_steps, seed)
-        record_walk_results(bit_counts, walk)
-    
+        record_walk_results(bit_counts, walk)    
     end
 
     return bit_counts
