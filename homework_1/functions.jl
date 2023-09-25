@@ -51,3 +51,21 @@ function update_walks_with_seed(walks::Array{Array{Int64, 1}, 1}, seed::UInt64)
     # updating walks
     update_walks_with_b(walks, b)
 end
+
+function perform_walks(steps::UInt64, seed::UInt64)::Array{Array{Int64}}
+    # function that takes the number of steps as an argument
+    # and the seed and performs the walks for a given number of steps
+    # Input: steps – number of steps in the walk
+    #        seed – initial seed of the walks
+    # Output: Array containing all 64 walks
+
+    # array storing walks
+    walks = [Int64[0] for _ in 1:64]
+
+    for _ in 1:steps
+        seed = generate_random(seed)
+        update_walks_with_seed(walks, seed)
+    end
+
+    return walks
+end
