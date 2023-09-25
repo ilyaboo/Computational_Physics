@@ -88,7 +88,7 @@ function record_walk_results(bit_counts::Vector{Vector{UInt64}}, walk::Vector{Ve
     end
 end
 
-function run_walks(num_walks::UInt64, num_steps::UInt64, seed::UInt64)::Vector{Vector{Int64}}
+function run_walks(num_walks::UInt64, num_steps::UInt64, seed::UInt64)::Vector{Vector{UInt64}}
     # main function which runs all the walks and teturns resultant bit counts
     # Input: num_walks – number of walks to be performed
     #        num_steps – number of steps in each walk
