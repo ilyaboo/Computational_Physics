@@ -1,3 +1,5 @@
+include("math_functions.jl")
+
 function read_input()::Tuple{UInt64, UInt64, UInt64}
     # function that reads the the number of walks,
     # number of steps per walk and the seed from the
@@ -36,4 +38,33 @@ function write_deviations(deviations::Vector{Float64}, num_walks::UInt64)
     end
 
     close(f)
+end
+
+function write_distributions(bit_freqs::Vector{UInt64}, num_walks::UInt64, num_steps::UInt64)
+    # function that writes the full distributions into the files
+    # Input: bit_freqs – results for bits after performing walks
+    #        num_walks – number of walks conducted
+    #        num_steps – number of steps in each walk
+
+    # iterating over bits
+    for b in 1:64
+
+        # generating the name of the file
+        if b < 10
+            filename = "p0" + string(b) + ".dat"
+        else
+            filename = "p" + string(b) + ".dat"
+        end
+
+        f = open(filename, "w")
+
+        # recording metrics for each value
+        for index in 1:length(bit_freqs[1])
+            println(f, bit_freqs[b][index],
+                    Float64(bit_freqs[b][index]) / num_walks,
+                    probability_bit_value(num_steps, index - num_steps - 1))
+        end
+        
+        close(f)
+    end
 end
