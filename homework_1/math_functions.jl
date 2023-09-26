@@ -1,4 +1,6 @@
-function probability_bit_value(num_steps::UInt64, val::Int64)::Float64
+using SpecialFunctions
+
+function probability_bit_value_slow(num_steps::UInt64, val::Int64)::Float64
     # function which calculates the expected probability
     # of eventual value that correspinded to a bit being equal to val
     # according to the formula for binomial distribution
@@ -16,6 +18,27 @@ function probability_bit_value(num_steps::UInt64, val::Int64)::Float64
     return (Float64(1) / 2^num_steps) * factorial(big(num_steps)) / 
             (factorial(big(div(num_steps + val, 2))) * 
             factorial(big(div(num_steps - val , 2))))
+end
+
+function probability_bit_value(num_steps::UInt64, val::Int64)::Float64
+    # function which calculates the expected probability
+    # of eventual value that correspinded to a bit being equal to val
+    # according to the formula for binomial distribution
+    # uses the logarithmic approach to avoid errors in calculations
+    # Input: num_steps – number of steps in a walk
+    #        val – eventual value after the walk is done
+    # Output: expected probability of obtaining such a value
+
+    # converting to floats
+    num_steps = Float64(num_steps)
+    val = Float64(val)
+
+    # calculating the logarithm of the probability
+    log_value = -num_steps * log(2.0) + loggamma(num_steps + 1) - 
+    loggamma((num_steps + val) / 2 + 1) - loggamma((num_steps - val) / 2 + 1)
+    
+    # converting back from the logarithmic value
+    return exp(log_value)
 end
 
 function expected_deviation(num_walks::UInt64, num_steps::UInt64, val::Int64, actual_count::UInt64)::Float64
@@ -67,4 +90,21 @@ function RMS_deviation_for_bit(bit_freqs::Vector{UInt64})::Float64
     # Output: RMS deviation
 
     return total_squared_deviation_for_bit(bit_freqs) ^ 0.5
+end
+
+function RMS_deviations(bit_counts::Vector{Vector{UInt64}})::Vector{Float64}
+    # functiuon that calculates the RMS deviations for all bits
+    # Input: bit_counts – 2D array with results after all walks are conducted
+    # Output: array with RMS deviations for all bits
+
+    deviations = zeros(Float64, 64)
+
+    # iterating over bits
+    for i in 1:64
+
+        # recording results
+        deviations[i] = RMS_deviation_for_bit(bit_counts[i])
+    end
+
+    return deviations
 end
