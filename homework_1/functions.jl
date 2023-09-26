@@ -37,7 +37,7 @@ function update_walks_with_b(walks::Vector{Vector{Int64}}, b::Vector{Int64})
     # by adding the next values according to the steps arrat b
     # Input: walks – array with current paths
     #        b – array with steps needed to take
-    for i in 1:length(walks)
+    for i in 1:64
         b[i] = b[i] * 2 - 1
         append!(walks[i], walks[i][end] + b[i])
     end
@@ -80,10 +80,10 @@ function record_walk_results(bit_counts::Vector{Vector{UInt64}}, walk::Vector{Ve
     #        walk – walk data that is used to update bit_counts
 
     # iterating over bits of the walk
-    for i in 1:length(walk)
+    for i in 1:64
 
         # incrementing the corresponding counter
-        bit_counts[i][walk[i][end] + length(walk)] += 1
+        bit_counts[i][walk[i][length(walk[i])] + length(walk[i])] += 1
 
     end
 end
