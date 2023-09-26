@@ -29,6 +29,12 @@ function probability_bit_value(num_steps::UInt64, val::Int64)::Float64
     #        val – eventual value after the walk is done
     # Output: expected probability of obtaining such a value
 
+    # if num_steps and val are different in parity, val
+    # cannot be obtained and probability is zero
+    if num_steps % 2 != abs(val % 2)
+        return Float64(0)
+    end
+    
     # converting to floats
     num_steps = Float64(num_steps)
     val = Float64(val)
