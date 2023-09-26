@@ -31,7 +31,9 @@ function write_deviations(deviations::Vector{Float64}, num_walks::UInt64)
 
     f = open("d.dat", "w")
 
-    for deviation in deviations
-        println(f, deviation * num_walks^0.5)
+    for i in 1:64
+        println(f, i, " ", deviations[i] * num_walks^0.5)
     end
+
+    close(f)
 end
