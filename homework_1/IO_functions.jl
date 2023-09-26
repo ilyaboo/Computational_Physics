@@ -23,3 +23,15 @@ function read_input()::Tuple{UInt64, UInt64, UInt64}
 
     return num_walks, num_steps, seed
 end
+
+function write_deviations(deviations::Vector{Float64}, num_walks::UInt64)
+    # function that writes the deviations into the file d.dat
+    # Input: deviations – deviations vector
+    #        num_walks – number of walks conducted
+
+    f = open("d.dat", "w")
+
+    for deviation in deviations
+        println(f, deviation * num_walks^0.5)
+    end
+end
