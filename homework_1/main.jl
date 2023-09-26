@@ -16,3 +16,6 @@ deviations = RMS_deviations(bit_counts)
 
 # writing the deviations into the file
 write_deviations(deviations, num_walks)
+
+# writing the distributions into the files
+write_distributions(bit_counts, num_walks, num_steps)
