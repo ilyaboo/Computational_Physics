@@ -27,3 +27,27 @@ function expected_deviation(num_walks::UInt64, num_steps::UInt64, val::Int64, ac
     # returning the difference after normalizing
     return (C - actual_count) / num_walks
 end
+
+function total_squared_deviation_for_bit(bit_freqs::Vector{UInt64})::Float64
+    # function which calculates total squared deviation for
+    # a given values corresponding to the bit after the walks
+
+    # calculating total number of walks
+    num_walks::UInt64 = sum(bit_freqs)
+
+    # calculating the total number of steps
+    num_steps::UInt64 = (length(bit_freqs) - 1) / 2
+
+    total_squared_deviation::Float64 = 0
+
+    # iterating over values corresponding to the bit
+    for i in 1:length(bit_freqs)
+        value::Int64 = i - Int64(num_steps) - 1   # value at the end of the walk
+        counter::UInt64 = bit_freqs[i]   # actual counter for the value
+
+        # updating the total squared deviation
+        total_squared_deviation += expected_deviation(num_walks, num_steps, value, counter)^2
+    end
+
+    return total_squared_deviation
+end
