@@ -37,6 +37,8 @@ end
 function total_squared_deviation_for_bit(bit_freqs::Vector{UInt64})::Float64
     # function which calculates total squared deviation for
     # a given values corresponding to the bit after the walks
+    # Input: bit_freqs – records of the bit after all walks
+    # Output: total squared deviation
 
     # calculating total number of walks
     num_walks::UInt64 = sum(bit_freqs)
@@ -56,4 +58,13 @@ function total_squared_deviation_for_bit(bit_freqs::Vector{UInt64})::Float64
     end
 
     return total_squared_deviation
+end
+
+function RMS_deviation_for_bit(bit_freqs::Vector{UInt64})::Float64
+    # function which calculates root-mean-square deviation for
+    # a given values corresponding to the bit after the walks
+    # Input: bit_freqs – records of the bit after all walks
+    # Output: RMS deviation
+
+    return total_squared_deviation_for_bit(bit_freqs) ^ 0.5
 end
