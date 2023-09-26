@@ -40,7 +40,7 @@ function write_deviations(deviations::Vector{Float64}, num_walks::UInt64)
     close(f)
 end
 
-function write_distributions(bit_freqs::Vector{UInt64}, num_walks::UInt64, num_steps::UInt64)
+function write_distributions(bit_freqs::Vector{Vector{UInt64}}, num_walks::UInt64, num_steps::UInt64)
     # function that writes the full distributions into the files
     # Input: bit_freqs – results for bits after performing walks
     #        num_walks – number of walks conducted
@@ -51,9 +51,9 @@ function write_distributions(bit_freqs::Vector{UInt64}, num_walks::UInt64, num_s
 
         # generating the name of the file
         if b < 10
-            filename = "p0" + string(b) + ".dat"
+            filename = "p0" * string(b) * ".dat"
         else
-            filename = "p" + string(b) + ".dat"
+            filename = "p" * string(b) * ".dat"
         end
 
         f = open(filename, "w")
@@ -61,7 +61,9 @@ function write_distributions(bit_freqs::Vector{UInt64}, num_walks::UInt64, num_s
         # recording metrics for each value
         for index in 1:length(bit_freqs[1])
             println(f, bit_freqs[b][index],
+                    " ",
                     Float64(bit_freqs[b][index]) / num_walks,
+                    " ",
                     probability_bit_value(num_steps, index - num_steps - 1))
         end
         
