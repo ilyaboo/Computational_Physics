@@ -64,7 +64,7 @@ function write_distributions(bit_freqs::Vector{Vector{UInt64}}, num_walks::UInt6
                     " ",
                     Float64(bit_freqs[b][index]) / num_walks,
                     " ",
-                    probability_bit_value(num_steps, index - num_steps - 1))
+                    probability_bit_value(num_steps, index - Int64(num_steps) - 1))
         end
         
         close(f)
