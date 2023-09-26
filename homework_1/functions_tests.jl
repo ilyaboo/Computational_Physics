@@ -24,3 +24,7 @@ end
 @test expected_deviation(UInt64(2), UInt64(1), 1, UInt64(0)) == Float64(0.5)
 @test expected_deviation(UInt64(2), UInt64(1), -1, UInt64(0)) == Float64(0.5)
 @test expected_deviation(UInt64(10), UInt64(1), 1, UInt64(4)) == Float64(0.1)
+
+# testing the total_squared_deviation_for_bit function
+@test total_squared_deviation_for_bit(UInt64[1, 0, 1]) == Float64(0)
+@test total_squared_deviation_for_bit(UInt64[0, 0, 2]) == Float64(0.5)
