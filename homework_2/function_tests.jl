@@ -19,3 +19,8 @@ end
     @test round(first_order_integration(1000000.0, UInt64(1000000000), 1.0, 1.0), digits = 3) ≈ 13.816
     @test round(first_order_integration(1000000.0, UInt64(1000000000), 1.0, 2.0), digits = 3) ≈ 1.000
 end
+
+@testset "Testing second_order_integration function" begin
+    @test round(second_order_integration(1000000.0, UInt64(1000000000), 1.0, 1.0), digits = 3) ≈ 13.816
+    @test round(second_order_integration(1000000.0, UInt64(1000000000), 1.0, 2.0), digits = 3) ≈ 1.000
+end
