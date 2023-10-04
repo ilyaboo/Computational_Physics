@@ -34,3 +34,8 @@ end
     @test is_inside_cylinder(1.0, 1.0, 1.0) == false
     @test is_inside_cylinder(0.0, 1.0, 1.0) == true
 end
+
+@testset "Testing added_inertia function" begin
+    @test added_inertia(0.5, 0.5, 0.0, 1.0, 5.0, 10.0) == (10.0 * 0.5^2, 10.0 * (0.5^2 + 0.5^2))
+    @test added_inertia(2.0, 0.5, 0.0, 1.0, 5.0, 10.0) == (5.0 * 0.5^2, 5.0 * (2.0^2 + 0.5^2))
+end

@@ -57,6 +57,21 @@ end
 
 function is_inside_cylinder(x::Float64, y::Float64, r::Float64)::Bool
     # helper function that veryfies whether a point with x and y coordinates
-    # is inside a cylinder of radius r
+    # is inside a cylinder of radius r given it is in the sphere of radius r
     return x^2 + y^2 <= r^2
+end
+
+function added_inertia(x::Float64, y::Float64, z::Float64, r_cylinder::Float64, rho1::Float64, rho2::Float64)::Tuple{Float64, Float64}
+    # function that computes the addition to the inertia given the point is in the sphere
+    
+    # calculating distance to the axis of rotation for x-axis and z-axis
+    distance_x_sqaured::Float64 = y^2 + z^2
+    distance_z_squared::Float64 = x^2 + y^2
+    
+    # checking if the point is in cylinder and using appropriate density
+    if is_inside_cylinder(x, y, r_cylinder)
+        return rho2 * distance_x_sqaured, rho2 * distance_z_squared
+    else
+        return rho1 * distance_x_sqaured, rho1 * distance_z_squared
+    end
 end
