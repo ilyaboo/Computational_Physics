@@ -1,6 +1,7 @@
 include("math_functions.jl")
 
-function read_input()::Tuple{Float64, UInt64, UInt64}
+function read_input_1()::Tuple{Float64, UInt64, UInt64}
+    # reading input for the first task
     # function that reads the upper bound (x_N),
     # base value (N_0) and maximum power (n_max)
     # from a user in the terminal
@@ -98,4 +99,25 @@ function conduct_series_integration(n_max::UInt64, N_0::UInt64, x_N::Float64, ep
 
     close(f1)
     close(f2)
+end
+
+function read_input_2()::Tuple{Float64, Float64, Float64, Float64, UInt64, UInt64}
+    # function that reads input for Monte Carlo integration from read.in
+
+    file = open("read.in", "r")
+    line1 = readline(file)
+    line2 = readline(file)
+    line3 = readline(file)
+    line4 = readline(file)
+    line5 = readline(file)
+    line6 = readline(file)
+
+    r1 = parse(Float64, line1)
+    r2 = parse(Float64, line2)
+    rho1 = parse(Float64, line3)
+    rho2 = parse(Float64, line4)
+    npt = parse(UInt64, line5)
+    nbi = parse(UInt64, line6)
+
+    return r1, r2, rho1, rho2, npt, nbi
 end
