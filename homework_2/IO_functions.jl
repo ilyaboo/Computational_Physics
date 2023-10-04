@@ -17,13 +17,21 @@ function read_input()::Tuple{Float64, UInt64, UInt64}
     return (x_N, N_0, n_max)
 end
 
-function conduct_series_integration(n_max::UInt64, N_0::UInt64, x_N::Float64, epsilon::Float64, alpha::Float64)
+function conduct_series_integration(n_max::UInt64, N_0::UInt64, x_N::Float64, epsilon::Float64, alpha::Float64, scenario::Int64)
     # function that conducts series of integrations
     # according to user input and producing relevant output
     # recorded into text files
+    # scenario variable is used for specific scenarios given in a problem to record
+    # additional data
 
     f1 = open("int_vals_1.txt", "w") # for valus produced by formula 1
     f2 = open("int_vals_2.txt", "w") # for valus produced by formula 2
+
+    # creating files for graphing data if one of the scenarios
+    if scenario in [1]
+        graph_1 = open("graph_data_1.txt", "w")
+        graph_2 = open("graph_data_2.txt", "w")
+    end
 
     # headers
     println(f1, "N h ln(h) value")
@@ -38,9 +46,25 @@ function conduct_series_integration(n_max::UInt64, N_0::UInt64, x_N::Float64, ep
         # calculating discretization step
         h = discretization_step(x_N, N)
 
+        # calculating the integral values
+        I1::Float64 = first_order_integration(x_N, N, epsilon, alpha)
+        I2::Float64 = second_order_integration(x_N, N, epsilon, alpha)
+
         # recording the integral values
-        println(f1, N, " ", h, " ", log(h), " ", first_order_integration(x_N, N, epsilon, alpha))
-        println(f2, N, " ", h, " ", log(h), " ", second_order_integration(x_N, N, epsilon, alpha))
+        println(f1, N, " ", h, " ", log(h), " ", I1)
+        println(f2, N, " ", h, " ", log(h), " ", I2)
+
+        # if one of the scenarios, record data using exact value of the integral
+        if scenario == 1
+
+            # calculating deltas
+            delta_1::Float64 = abs(I1 - 0.82843)
+            delta_2::Float64 = abs(I2 - 0.82843)
+
+            # recordong the results
+            println(graph_1, log(h), " ", log(delta_1))
+            println(graph_2, log(h), " ", log(delta_2))
+        end
     end
 
     close(f1)
