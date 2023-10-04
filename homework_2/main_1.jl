@@ -2,7 +2,7 @@ include("math_functions.jl")
 include("IO_functions.jl")
 
 # reading input
-x_N, N_0, n_max = read_input()
+x_N, N_0, n_max = read_input_1()
 
 # f(x) parameters
 epsilon::Float64 = 10^-5
