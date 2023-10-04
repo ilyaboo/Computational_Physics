@@ -81,7 +81,7 @@ function conduct_series_integration(n_max::UInt64, N_0::UInt64, x_N::Float64, ep
             delta_1 = abs(I1 - 4.0)
             delta_2 = abs(I2 - 4.0)
 
-        elseif scenario == 3
+        elseif scenario == 4
 
             # calculating deltas
             delta_1 = abs(I1 - 1.9937)
