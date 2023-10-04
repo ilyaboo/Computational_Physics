@@ -23,12 +23,15 @@ function conduct_series_integration(n_max::UInt64, N_0::UInt64, x_N::Float64, ep
     # recorded into text files
     # scenario variable is used for specific scenarios given in a problem to record
     # additional data
-
+    # Scenario 1: epsilon = 1, alpha = 1/2, x_N = 1, N_0 = 10; exact_val = 0.82843
+    # Scenario 2: epsilon = 0, alpha = 1/2, x_N = 1, N_0 = 10; excat_val = 2.0
+    # Scenario 3: epsilon = 0, alpha = 3/4, x_N = 1, N_0 = 10; exactl_val = 4.0
+    # Scenario 4: epsilon = 10^-5, alpha = 1/2, x_N = 1, N_0 = 10; exactl_val = 1.9937
     f1 = open("int_vals_1.txt", "w") # for valus produced by formula 1
     f2 = open("int_vals_2.txt", "w") # for valus produced by formula 2
 
     # array storing numbers of scenarios
-    scenarios = [1, 2]
+    scenarios = [1, 2, 3, 4]
 
     # creating files for graphing data if one of the scenarios
     if scenario in scenarios
@@ -71,6 +74,18 @@ function conduct_series_integration(n_max::UInt64, N_0::UInt64, x_N::Float64, ep
             # calculating deltas
             delta_1 = abs(I1 - 2.0)
             delta_2 = abs(I2 - 2.0)
+
+        elseif scenario == 3
+
+            # calculating deltas
+            delta_1 = abs(I1 - 4.0)
+            delta_2 = abs(I2 - 4.0)
+
+        elseif scenario == 3
+
+            # calculating deltas
+            delta_1 = abs(I1 - 1.9937)
+            delta_2 = abs(I2 - 1.9937)
 
         end
 
