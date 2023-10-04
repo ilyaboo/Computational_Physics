@@ -27,10 +27,15 @@ function conduct_series_integration(n_max::UInt64, N_0::UInt64, x_N::Float64, ep
     f1 = open("int_vals_1.txt", "w") # for valus produced by formula 1
     f2 = open("int_vals_2.txt", "w") # for valus produced by formula 2
 
+    # array storing numbers of scenarios
+    scenarios = [1, 2]
+
     # creating files for graphing data if one of the scenarios
-    if scenario in [1]
+    if scenario in scenarios
         graph_1 = open("graph_data_1.txt", "w")
         graph_2 = open("graph_data_2.txt", "w")
+        delta_1 = Float64
+        delta_2 = Float64
     end
 
     # headers
@@ -58,9 +63,18 @@ function conduct_series_integration(n_max::UInt64, N_0::UInt64, x_N::Float64, ep
         if scenario == 1
 
             # calculating deltas
-            delta_1::Float64 = abs(I1 - 0.82843)
-            delta_2::Float64 = abs(I2 - 0.82843)
+            delta_1 = abs(I1 - 0.82843)
+            delta_2 = abs(I2 - 0.82843)
 
+        elseif scenario == 2
+
+            # calculating deltas
+            delta_1 = abs(I1 - 2.0)
+            delta_2 = abs(I2 - 2.0)
+
+        end
+
+        if scenario in scenarios
             # recordong the results
             println(graph_1, log(h), " ", log(delta_1))
             println(graph_2, log(h), " ", log(delta_2))
