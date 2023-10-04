@@ -1,3 +1,5 @@
+using Random
+
 function f(x::Float64, epsilon::Float64, alpha::Float64)::Float64
     # function that is used in the assignment
     return 1 / (epsilon + x)^alpha
@@ -45,4 +47,10 @@ function second_order_integration(x_N::Float64, N::UInt64, epsilon::Float64, alp
 
     # returning the result multiplied by the step
     return h * result
+end
+
+function is_inside_sphere(x::Float64, y::Float64, z::Float64, r::Float64)::Bool
+    # helper function that veryfies whether a point (x, y, z) is in a spefere
+    # or radius r
+    return x^2 + y^2 + z^2 <= r^2
 end

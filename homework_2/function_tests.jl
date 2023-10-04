@@ -24,3 +24,8 @@ end
     @test round(second_order_integration(1000000.0, UInt64(1000000000), 1.0, 1.0), digits = 3) ≈ 13.816
     @test round(second_order_integration(1000000.0, UInt64(1000000000), 1.0, 2.0), digits = 3) ≈ 1.000
 end
+
+@testset "Testing is_inside_sphere function" begin
+    @test is_inside_sphere(1.0, 1.0, 0.0, 2.0) == true
+    @test is_inside_sphere(1.0, 2.0, 3.0, 2.0) == false
+end
