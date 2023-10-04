@@ -29,3 +29,8 @@ end
     @test is_inside_sphere(1.0, 1.0, 0.0, 2.0) == true
     @test is_inside_sphere(1.0, 2.0, 3.0, 2.0) == false
 end
+
+@testset "Testing is_inside_cylinder function" begin
+    @test is_inside_cylinder(1.0, 1.0, 1.0) == false
+    @test is_inside_cylinder(0.0, 1.0, 1.0) == true
+end

@@ -54,3 +54,9 @@ function is_inside_sphere(x::Float64, y::Float64, z::Float64, r::Float64)::Bool
     # or radius r
     return x^2 + y^2 + z^2 <= r^2
 end
+
+function is_inside_cylinder(x::Float64, y::Float64, r::Float64)::Bool
+    # helper function that veryfies whether a point with x and y coordinates
+    # is inside a cylinder of radius r
+    return x^2 + y^2 <= r^2
+end
