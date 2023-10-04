@@ -25,15 +25,22 @@ function conduct_series_integration(n_max::UInt64, N_0::UInt64, x_N::Float64, ep
     f1 = open("int_vals_1.txt", "w") # for valus produced by formula 1
     f2 = open("int_vals_2.txt", "w") # for valus produced by formula 2
 
+    # headers
+    println(f1, "N h ln(h) value")
+    println(f2, "N h ln(h) value")
+
     # iterating over power values
     for n in 0:n_max
 
         # calculating the number of steps
         N::UInt64 = N_0 * 2^n
 
+        # calculating discretization step
+        h = discretization_step(x_N, N)
+
         # recording the integral values
-        println(f1, N, " ", first_order_integration(x_N, N, epsilon, alpha))
-        println(f2, N, " ", second_order_integration(x_N, N, epsilon, alpha))
+        println(f1, N, " ", h, " ", log(h), " ", first_order_integration(x_N, N, epsilon, alpha))
+        println(f2, N, " ", h, " ", log(h), " ", second_order_integration(x_N, N, epsilon, alpha))
     end
 
     close(f1)
