@@ -1,4 +1,5 @@
 include("math_functions.jl")
+using Random
 
 function read_input_1()::Tuple{Float64, UInt64, UInt64}
     # reading input for the first task
@@ -111,6 +112,7 @@ function read_input_2()::Tuple{Float64, Float64, Float64, Float64, UInt64, UInt6
     line4 = readline(file)
     line5 = readline(file)
     line6 = readline(file)
+    close(file)
 
     r1 = parse(Float64, line1)
     r2 = parse(Float64, line2)
@@ -120,4 +122,77 @@ function read_input_2()::Tuple{Float64, Float64, Float64, Float64, UInt64, UInt6
     nbi = parse(UInt64, line6)
 
     return r1, r2, rho1, rho2, npt, nbi
+end
+
+function run_monte_carlo_integration(r1::Float64, r2::Float64, rho1::Float64, rho2::Float64, npt::UInt64, nbi::UInt64)
+    # function that runs the monte carlo integration and
+    # records the results
+
+    file_bins = open("bin.dat", "w")
+    file_res = open("res.dat", "w")
+
+    # sphere volume for future calculations
+    sphere_volume = 4/3 * π * r1^3
+
+    # bin results
+    bin_data = []
+
+    # iterating over bins
+    for bin in 1:nbi
+
+        # recording inertia totals
+        bin_Ix::Float64 = 0.0
+        bin_Iz::Float64 = 0.0
+
+        # counting number of point generated
+        bin_points_counter::UInt64 = 0
+
+        while bin_points_counter != npt
+
+            # generating ranomd coordinates
+            x::Float64 = r1 * (2 * rand() - 1)
+            y::Float64 = r1 * (2 * rand() - 1)
+            z::Float64 = r1 * (2 * rand() - 1)
+
+            # checking if the point is in the sphere
+            if is_inside_sphere(x, y, z, r1)
+
+                # incrementing the number of points recorded
+                bin_points_counter += 1
+
+                # calculating additions to inertias
+                delta_Ix, delta_Iz = added_inertia(x, y, z, r2, rho1, rho2)
+
+                # adding to total inertias
+                bin_Ix += delta_Ix
+                bin_Iz += delta_Iz
+            end
+        end
+
+        # calculating Ix and Iz for the bin
+        bin_average_Ix = sphere_volume * bin_Ix / npt
+        bin_average_Iz = sphere_volume * bin_Iz / npt
+
+        # recording bin averages
+        println(file_bins, bin, " ", bin_average_Iz, " ", bin_average_Ix)
+
+        # adding results to the array
+        push!(bin_data, (bin_average_Ix, bin_average_Iz))
+    
+    end
+
+    # calculating final average and error bar 
+    final_average_Ix = sum([val[1] for val in bin_data]) / nbi
+    final_average_Iz = sum([val[2] for val in bin_data]) / nbi
+
+    # calculating standard deviations of the means
+    std_Ix = sqrt(sum([(val[1] - final_average_Ix)^2 for val in bin_data]) / nbi)
+    std_Iz = sqrt(sum([(val[2] - final_average_Iz)^2 for val in bin_data]) / nbi)
+
+    # recording results 
+    println(file_res, "z: ", final_average_Iz, " ", std_Iz)
+    println(file_res, "x: ", final_average_Ix, " ", std_Ix)
+
+    close(file_bins)
+    close(file_res)
 end
