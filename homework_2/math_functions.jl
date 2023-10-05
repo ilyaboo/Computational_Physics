@@ -1,5 +1,3 @@
-using Random
-
 function f(x::Float64, epsilon::Float64, alpha::Float64)::Float64
     # function that is used in the assignment
     return 1 / (epsilon + x)^alpha
