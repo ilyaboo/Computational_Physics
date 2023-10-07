@@ -1,4 +1,4 @@
-function get_user_input()::Tuple{}
+function read_user_input()::Tuple{Float64, UInt64, UInt64, UInt64}
     # function that reads and returns simulation
     # parameters from user
 
@@ -9,7 +9,7 @@ function get_user_input()::Tuple{}
     Nt = parse(UInt64, readline())
 
     println("Enter t_max (integration time) in seconds:")
-    Nt = parse(UInt64, readline())
+    tmax = parse(UInt64, readline())
 
     println("Enter N_w (each how many steps the data will be recorded):")
     Nw = parse(UInt64, readline())
