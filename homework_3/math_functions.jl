@@ -11,7 +11,7 @@ function get_accelerations(rs::Tuple{Float64, Float64, Float64}, rm::Tuple{Float
     rs_length = sqrt(s_x^2 + s_y^2 + s_z^2)
 
     # extracting coordinates of the Moon
-    m_x, m_y, m_z = rs
+    m_x, m_y, m_z = rm
 
     # calculating r_sm components
     sm_x = s_x - m_x
