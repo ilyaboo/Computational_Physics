@@ -28,3 +28,17 @@ function get_accelerations(rs::Tuple{Float64, Float64, Float64}, rm::Tuple{Float
 
     return ax, ay, az
 end
+
+function get_moon_pos(t::Float64, alpha::Float64)::Tuple{Float64, Float64, Float64}
+    # function that given the time t and angle alpha returns
+    # the coordinates of the Moon
+
+    # converting alpha to radians
+    alpha = alpha * π / 180
+    
+    r_x::Float64 = rm * cos(alpha) * cos(2 * π * t / Tm)
+    r_y::Float64 = rm * sin(2 * π * t / Tm)
+    r_z::Float64 = rm * sin(alpha) * cos(2 * π * t / Tm)
+
+    return r_x, r_y, r_z
+end
