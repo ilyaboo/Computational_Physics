@@ -22,9 +22,9 @@ function get_accelerations(rs::Tuple{Float64, Float64, Float64}, rm::Tuple{Float
     rsm_length = sqrt(sm_x^2 + sm_y^2 + sm_z^2)
     
     # calculating components of the acceleration
-    ax::Float64 = -G * Me * s_x / rs_length^3 - G * Mm * sm_x / rsm_length^3
-    ay::Float64 = -G * Me * s_y / rs_length^3 - G * Mm * sm_y / rsm_length^3
-    az::Float64 = -G * Me * s_z / rs_length^3 - G * Mm * sm_z / rsm_length^3
+    ax::Float64 = -GMe * s_x / rs_length^3 - GMm * sm_x / rsm_length^3
+    ay::Float64 = -GMe * s_y / rs_length^3 - GMm * sm_y / rsm_length^3
+    az::Float64 = -GMe * s_z / rs_length^3 - GMm * sm_z / rsm_length^3
 
     return ax, ay, az
 end

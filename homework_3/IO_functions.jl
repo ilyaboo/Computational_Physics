@@ -48,37 +48,37 @@ function run_simulation(alpha::Float64, Nt::UInt64, tmax::UInt64, Nw::UInt64)
         # incrementing step counter
         step_counter += 1
 
+        # calculating current angle phi
+        phi = atan(s_y, s_x)
+
+        # if produced a negative, convert to prositive
+        if phi < 0.0
+            phi = 2 * π + phi
+        
+        # if phi is positive and previous was negative
+        # the full rotation was made
+        elseif prev_phi < 0.0
+            nr += 1
+        end
+
+        # updating previous phi
+        prev_phi = phi
+
         # checking if should record this step
         if step_counter == Nw
 
             # resetting step counter
             step_counter = 0
 
-            # calculating current angle phi
-            phi = atan(s_y, s_x)
-
-            # if produced a negative, convert to prositive
-            if phi < 0.0
-                phi = 2 * π + phi
-            
-            # if phi is positive and previous was negative
-            # the full rotation was made
-            elseif prev_phi < 0.0
-                nr += 1
-            end
-
-            # updating previous phi
-            prev_phi = phi
-
             # recording data
             println(file, 
                         t, " ", 
                         phi + 2 * π * nr, " ", 
                         phi + 2 * π * nr - 2 * π * t / Ts, " ", 
-                        sqrt(s_x^2 + s_y^2 + s_z^2) - (G * Me * Ts^2 / (4 * π^2))^(1/3), " ",
+                        sqrt(s_x^2 + s_y^2 + s_z^2) - (GMe * Ts^2 / (4 * π^2))^(1/3), " ",
                         atan(s_z, sqrt(s_x^2 + s_y^2)))
         end
-        
+
         # obtaining moon coordinates
         m_x, m_y, m_z = get_moon_pos(t, alpha)
 
