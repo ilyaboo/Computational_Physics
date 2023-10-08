@@ -34,7 +34,7 @@ function get_moon_pos(t::Float64, alpha::Float64)::Tuple{Float64, Float64, Float
     # the coordinates of the Moon
 
     # converting alpha to radians
-    alpha = alpha * π / 180
+    alpha = deg2rad(alpha)
     
     r_x::Float64 = rm * cos(alpha) * cos(2 * π * t / Tm)
     r_y::Float64 = rm * sin(2 * π * t / Tm)
