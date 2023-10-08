@@ -26,7 +26,7 @@ function run_simulation(alpha::Float64, Nt::UInt64, tmax::UInt64, Nw::UInt64)
 
     # initial velocity components of the satellite
     v_x::Float64 = 0.0
-    v_y::Float64 = sqrt(GMe / rs)
+    v_y::Float64 = sqrt(GMe / Rs)
     v_z::Float64 = 0.0
 
     # step counter for data recording
