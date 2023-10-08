@@ -24,6 +24,11 @@ function run_simulation(alpha::Float64, Nt::UInt64, tmax::UInt64, Nw::UInt64)
     s_y::Float64 = 0.0
     s_z::Float64 = 0.0
 
+    # initial velocity components of the satellite
+    v_x::Float64 = 0.0
+    v_y::Float64 = sqrt(GMe / rs)
+    v_z::Float64 = 0.0
+
     # step counter for data recording
     step_counter::UInt64 = 0
 
@@ -85,10 +90,15 @@ function run_simulation(alpha::Float64, Nt::UInt64, tmax::UInt64, Nw::UInt64)
         # using the net force equation to calculate acceleration components
         ax, ay, az = get_accelerations((s_x, s_y, s_z), (m_x, m_y, m_z))
 
-        # using leapfrog algorithm to update satellite's coordinates
-        s_x += ax * dt
-        s_y += ay * dt
-        s_z += az * dt
+        # using leapfrog algorithm to update satellite's velocity components
+        v_x += ax * dt
+        v_y += ay * dt
+        v_z += az * dt
+
+        # using leapfrog algorithm to update satellite's position components
+        s_x += v_x * dt
+        s_y += v_y * dt
+        s_z += v_z * dt
 
         # increasing time
         t += dt
