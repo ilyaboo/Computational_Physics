@@ -61,10 +61,11 @@ function run_simulation(alpha::Float64, Nt::UInt64, tmax::UInt64, Nw::UInt64)
         # if produced a negative, convert to prositive
         if phi < 0.0
             phi = 2 * π + phi
+        end
         
-        # if phi is positive and previous was negative
-        # the full rotation was made
-        elseif prev_phi < 0.0
+        # if phi is smaller than the previous one,
+        # one rotation was made
+        if prev_phi > phi
             nr += 1
         end
 
