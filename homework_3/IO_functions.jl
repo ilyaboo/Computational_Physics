@@ -1,3 +1,5 @@
+include("constants.jl")
+
 function read_user_input()::Tuple{Float64, UInt64, UInt64, UInt64}
     # function that reads and returns simulation
     # parameters from user
