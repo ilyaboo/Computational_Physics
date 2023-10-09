@@ -81,6 +81,7 @@ function run_simulation(alpha::Float64, Nt::UInt64, tmax::UInt64, Nw::UInt64)
             println(file, 
                         t, " ", 
                         phi + 2 * π * nr, " ", 
+                        sqrt(s_x^2 + s_y^2 + s_z^2), " ", 
                         phi + 2 * π * nr - 2 * π * t / Ts, " ", 
                         sqrt(s_x^2 + s_y^2 + s_z^2) - (GMe * Ts^2 / (4 * π^2))^(1/3), " ",
                         atan(s_z, sqrt(s_x^2 + s_y^2)))
