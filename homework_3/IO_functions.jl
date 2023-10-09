@@ -22,7 +22,7 @@ end
 function run_simulation(alpha::Float64, Nt::UInt64, tmax::UInt64, Nw::UInt64)
 
     # initial coordinates of the satellite
-    s_x::Float64 = rs
+    s_x::Float64 = Rs
     s_y::Float64 = 0.0
     s_z::Float64 = 0.0
 
