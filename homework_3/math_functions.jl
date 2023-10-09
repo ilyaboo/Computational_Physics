@@ -36,9 +36,9 @@ function get_moon_pos(t::Float64, alpha::Float64)::Tuple{Float64, Float64, Float
     # converting alpha to radians
     alpha = deg2rad(alpha)
     
-    r_x::Float64 = rm * cos(alpha) * cos(2 * π * t / Tm)
-    r_y::Float64 = rm * sin(2 * π * t / Tm)
-    r_z::Float64 = rm * sin(alpha) * cos(2 * π * t / Tm)
+    r_x::Float64 = Rm * cos(alpha) * cos(2 * π * t / Tm)
+    r_y::Float64 = Rm * sin(2 * π * t / Tm)
+    r_z::Float64 = Rm * sin(alpha) * cos(2 * π * t / Tm)
 
     return r_x, r_y, r_z
 end
