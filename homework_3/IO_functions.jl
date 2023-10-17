@@ -12,7 +12,7 @@ function read_user_input()::Tuple{Float64, UInt64, UInt64, UInt64}
 
     println("Enter t_max (integration time) in days:")
     tmax = parse(UInt64, readline())
-    tmax = tmax * Ts
+    tmax = tmax * T0
 
     println("Enter N_w (each how many steps the data will be recorded):")
     Nw = parse(UInt64, readline())
@@ -46,7 +46,7 @@ function run_simulation(alpha::Float64, Nt::UInt64, tmax::UInt64, Nw::UInt64)
     prev_phi::Float64 = 0.0
 
     # calculating time step
-    dt::Float64 = Ts / Nt
+    dt::Float64 = T0 / Nt
 
     file = open("sat.dat", "w")
 
