@@ -95,18 +95,27 @@ function run_simulation(alpha::Float64, Nt::UInt64, tmax::UInt64, Nw::UInt64)
         # using the net force equation to calculate acceleration components
         ax, ay, az = get_accelerations((s_x, s_y, s_z), (m_x, m_y, m_z))
 
-        # using leapfrog algorithm to update satellite's velocity components
-        v_x += ax * dt
-        v_y += ay * dt
-        v_z += az * dt
+        # using leapfrog algorithm to update satellite's velocity components halfway through dt
+        v_x += 0.5 * ax * dt
+        v_y += 0.5 * ay * dt
+        v_z += 0.5 * az * dt
 
-        # using leapfrog algorithm to update satellite's position components
+        # updating position components
         s_x += v_x * dt
         s_y += v_y * dt
         s_z += v_z * dt
 
         # increasing time
         t += dt
+
+        # obtaining accelerations for new position
+        m_x, m_y, m_z = get_moon_pos(t, alpha)
+        ax, ay, az = get_accelerations((s_x, s_y, s_z), (m_x, m_y, m_z))
+
+        # updating velocities for the end of dt
+        v_x += 0.5 * ax * dt
+        v_y += 0.5 * ay * dt
+        v_z += 0.5 * az * dt
 
     end
 
