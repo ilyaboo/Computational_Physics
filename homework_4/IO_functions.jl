@@ -20,10 +20,12 @@ function write_results(r_max::Float64, delta_r::Float64)
 
     file = open("vr.dat", "w")
 
-    for a in 0.5:0.01:3.0
-        V0 = find_bound_state(a, 0.001, r_max, delta_r)
-        r = compute_radius(V0, delta_r)
+    for a in 0.5:0.1:3.0
+        V0 = find_bound_state(a, 0.1, r_max, delta_r)
+        println("found state")
+        r = compute_radius(V0, delta_r, r_max, a)
         println(file, a, ",", V0, ",", r)
+        println("checked for ", a)
     end
 
     close(file)
