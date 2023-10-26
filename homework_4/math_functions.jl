@@ -12,7 +12,7 @@ function get_potential(r::Float64, a::Float64, V0::Float64)::Float64
     end
 end
 
-function compute_wave_function(r_max::Float64, delta_r::Float64, a::Float64, V0::Float64)::Float64
+function compute_wave_function(r_max::Float64, delta_r::Float64, a::Float64, V0::Float64)::Vector{Float64}
     # function which returns values of the wave function
 
     # initial values
