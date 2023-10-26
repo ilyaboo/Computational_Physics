@@ -60,7 +60,7 @@ function find_bound_state(a::Float64, delta_V::Float64, r_max::Float64, delta_r:
 
         # calculating new value of the wave function
         U_new = last(compute_wave_function(r_max, delta_r, a, -(V0_over_E + delta_V) * abs(E)))
-        println(U, U_new)
+
         # checking if the values changed sign compared to the previous one
         if U * U_new < 0.0
             break
