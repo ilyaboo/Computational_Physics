@@ -95,3 +95,27 @@ function find_bound_state(a::Float64, delta_V::Float64, r_max::Float64, delta_r:
 
     return V0_over_E_mid * abs(E)
 end
+
+function compute_radius(V0::Float64, delta_r::Float64)::Float64
+    # function that uses calculated VO for the bound state
+    
+    # obtain the wave function for V0_val
+    U_vals = compute_wave_function(r_max, delta_r, a, V0)
+
+    # storing the expected squared radius
+    expected_r2::Float64 = 0.0
+
+    # iterating over values of the wave function
+    # in order to intedrate
+    for i in 1:length(U_vals)
+
+        # calculating the distance
+        r = delta_r * i
+
+        # adding the contribution to the total
+        expected_r2 += 4 * π * r * U_vals[i]^2 * delta_r
+    end
+
+    # returning the radius
+    return sqrt(expected_r2)
+end
