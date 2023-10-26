@@ -16,8 +16,8 @@ function compute_wave_function(r_max::Float64, delta_r::Float64, a::Float64, V0:
     # function which returns values of the wave function
 
     # initial values
-    U_prev::Float64 = 0.01
-    U::Float64 = 0.02
+    U_prev::Float64 = 0.0001
+    U::Float64 = 0.0002
     r::Float64 = r_max
 
     # storing the U values
@@ -59,8 +59,8 @@ function find_bound_state(a::Float64, delta_V::Float64, r_max::Float64, delta_r:
     while true
 
         # calculating new value of the wave function
-        U_new = last(compute_wave_function(r_max, delta_r, a, (V0_over_E + delta_V) * abs(E)))
-
+        U_new = last(compute_wave_function(r_max, delta_r, a, -(V0_over_E + delta_V) * abs(E)))
+        println(U, U_new)
         # checking if the values changed sign compared to the previous one
         if U * U_new < 0.0
             break
@@ -77,6 +77,7 @@ function find_bound_state(a::Float64, delta_V::Float64, r_max::Float64, delta_r:
     V0_over_E_right = V0_over_E + delta_V
     U_left = compute_wave_function(r_max, delta_r, a, (V0_over_E_left) * abs(E))
     U_right = compute_wave_function(r_max, delta_r, a, (V0_over_E_right) * abs(E))
+    V0_over_E_mid::Float64 = 0.0
     for _ in 1:10000
 
         # calculating the value in the middle
@@ -86,7 +87,7 @@ function find_bound_state(a::Float64, delta_V::Float64, r_max::Float64, delta_r:
         U_mid = compute_wave_function(r_max, delta_r, a, (V0_over_E_mid) * abs(E))
 
         # checking if should move to the left side 
-        if U_left * U_mid < 0.0
+        if last(U_left) * last(U_mid) < 0.0
             V0_over_E_right = V0_over_E_mid
         else
             V0_over_E_left = V0_over_E_mid
@@ -96,7 +97,7 @@ function find_bound_state(a::Float64, delta_V::Float64, r_max::Float64, delta_r:
     return V0_over_E_mid * abs(E)
 end
 
-function compute_radius(V0::Float64, delta_r::Float64)::Float64
+function compute_radius(V0::Float64, delta_r::Float64, r_max::Float64, a::Float64)::Float64
     # function that uses calculated VO for the bound state
     
     # obtain the wave function for V0_val
