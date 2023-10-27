@@ -96,26 +96,39 @@ function find_bound_state(a::Float64, delta_V::Float64, r_max::Float64, delta_r:
     return V0_over_E_mid * abs(E)
 end
 
-function compute_radius(V0::Float64, delta_r::Float64, r_max::Float64, a::Float64)::Float64
-    # function that uses calculated VO for the bound state
-    
-    # obtain the wave function for V0_val
-    U_vals = compute_wave_function(r_max, delta_r, a, V0)
 
-    # storing the expected squared radius
-    expected_r2::Float64 = 0.0
+function normalize_wave_function(U::Vector{Float64}, delta_r::Float64)::Vector{Float64}
+    # function that normalizes the probability function
 
-    # iterating over values of the wave function
-    # in order to intedrate
-    for i in 1:length(U_vals)
+    # storing the integral value
+    integral = 0.0
 
-        # calculating the distance
-        r = delta_r * i
-
-        # adding the contribution to the total
-        expected_r2 += 4 * π * r * U_vals[i]^2 * delta_r
+    # calculating the integral
+    for i in 1:length(U)
+        r = r0 + (i-1) * delta_r
+        integral += (U[i]^2) * (r^2) * delta_r
     end
 
-    # returning the radius
-    return sqrt(expected_r2)
+    # taking the square root for normalization constant
+    norm_const = sqrt(integral)
+
+    return U ./ norm_const
+end
+
+function compute_radius(V0::Float64, delta_r::Float64, r_max::Float64, a::Float64)::Float64
+    # function that uses calculated VO for the bound state
+
+    # obtaining the function
+    U = normalize_wave_function(compute_wave_function(r_max, delta_r, a, V0), delta_r)
+    
+    # storing the integral value
+    integral = 0.0
+    
+    # calculating the integral
+    for i in 1:length(U)
+        r = r0 + (i - 1) * delta_r
+        integral += (U[i]^2) * (r^4) * delta_r
+    end
+
+    return sqrt(4 * π * integral)
 end
