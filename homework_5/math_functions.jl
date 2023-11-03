@@ -23,3 +23,11 @@ function that returns the index of the state given
 function get_state_index(k_x::UInt64, k_y::UInt64, N_x::UInt64)::UInt64
     return k_x + (k_y - 1) * N_x
 end
+
+"""
+function that returns the kinetic enery term
+    of the hamiltonian given `k_x` and `k_y`
+"""
+function get_kinetic_energy_term(k_x::UInt64, k_y::UInt64)::Float64
+    return π^2 / 2 * ((Float64(k_x) / L_x)^2 + (Float64(k_y) / L_y)^2)
+end
