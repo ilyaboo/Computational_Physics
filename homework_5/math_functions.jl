@@ -26,8 +26,8 @@ end
 
 """
 function that returns the kinetic enery term
-    of the hamiltonian given `k_x` and `k_y`
+    of the hamiltonian multiplied by `β`, given `k_x` and `k_y`
 """
-function get_kinetic_energy_term(k_x::UInt64, k_y::UInt64)::Float64
+function get_beta_times_kinetic_energy(k_x::UInt64, k_y::UInt64)::Float64
     return π^2 / 2 * ((Float64(k_x) / L_x)^2 + (Float64(k_y) / L_y)^2)
 end
