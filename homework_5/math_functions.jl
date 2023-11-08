@@ -1,3 +1,4 @@
+using LinearAlgebra
 include("constants.jl")
 
 """
@@ -77,3 +78,55 @@ function get_potential_energy(k_x::UInt64, p_x::UInt64, k_y::UInt64, p_y::UInt64
         return 0.0
     end
 end
+
+
+"""
+function whcih constructs the Hamiltonian matrix
+"""
+function construct_hamiltonian(Nx::UInt64, Ny::UInt64)::Array{Float64,2}
+
+    # the total number of states is Nx * Ny
+    N = Nx * Ny
+
+    # initializing the Hamiltonian matrix with zeros
+    H = zeros(Float64, N, N)  
+
+    # iterating over all states
+    for kx in 1:Nx
+        for ky in 1:Ny
+
+            # calculating state index
+            k_index = get_state_index(kx, ky, Nx)
+            
+            # calculating kinetic energy term
+            H[k_index, k_index] = get_beta_times_kinetic_energy(kx, ky)
+            
+            # calculating potential energy terms
+            for px in 1:Nx
+                for py in 1:Ny
+
+                    # calculating index for the state (px, py)
+                    p_index = get_state_index(px, py, Nx)
+                    
+                    # calculating the potential energy contribution
+                    potential_energy_contribution = get_potential_energy(kx, px, ky, py, x, y)
+                    
+                    # plugging in potential energy to the Hamiltonian
+                    H[k_index, p_index] += potential_energy_contribution
+
+                    # checkign for symmetry
+                    if k_index != p_index
+                        H[p_index, k_index] = H[k_index, p_index]
+                    end
+                end
+            end
+        end
+    end
+    
+    return H
+end
+
+# Construct the Hamiltonian
+Hamiltonian = construct_hamiltonian(Nx, Ny)
+
+# eigenvalues, eigenvectors = eigen(Hamiltonian)
