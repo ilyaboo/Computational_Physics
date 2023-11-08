@@ -59,10 +59,20 @@ function that returns the potnetial energy term of the
 """
 function get_potential_energy(k_x::UInt64, p_x::UInt64, k_y::UInt64, p_y::UInt64, x::Float64, y::Float64)::Float64
     if check_if_inside_rectangles(x, y)
-        return V0 / π^2 * ((sin(π * x * (Float64(p_x) - Float64(k_x)) / Lx) / (Float64(p_x) - Float64(k_x))) -
-                (sin(π * x * (Float64(p_x) + Float64(k_x)) / Lx) / (Float64(p_x) + Float64(k_x)))) *
-                ((sin(π * y * (Float64(p_y) - Float64(k_y)) / Ly) / (Float64(p_y) - Float64(k_y))) -
-                (sin(π * y * (Float64(p_y) + Float64(k_y)) / Ly) / (Float64(p_y) + Float64(k_y))))
+        return V0 / π^2 * 
+                (((sin(π * (x0 + a) * (Float64(p_x) - Float64(k_x)) / Lx) / (Float64(p_x) - Float64(k_x))) -
+                (sin(π * (x0 + a) * (Float64(p_x) + Float64(k_x)) / Lx) / (Float64(p_x) + Float64(k_x)))) - 
+                ((sin(π * x0 * (Float64(p_x) - Float64(k_x)) / Lx) / (Float64(p_x) - Float64(k_x))) -
+                (sin(π * x0 * (Float64(p_x) + Float64(k_x)) / Lx) / (Float64(p_x) + Float64(k_x))))) *
+
+                (((sin(π * (Ly - y0) * (Float64(p_y) - Float64(k_y)) / Ly) / (Float64(p_y) - Float64(k_y))) -
+                (sin(π * (Ly - y0) * (Float64(p_y) + Float64(k_y)) / Ly) / (Float64(p_y) + Float64(k_y)))) - 
+                ((sin(π * (Ly - y0 - b) * (Float64(p_y) - Float64(k_y)) / Ly) / (Float64(p_y) - Float64(k_y))) -
+                (sin(π * (Ly - y0 - b) * (Float64(p_y) + Float64(k_y)) / Ly) / (Float64(p_y) + Float64(k_y)))) +
+                ((sin(π * (y0 + b) * (Float64(p_y) - Float64(k_y)) / Ly) / (Float64(p_y) - Float64(k_y))) -
+                (sin(π * (y0 + b) * (Float64(p_y) + Float64(k_y)) / Ly) / (Float64(p_y) + Float64(k_y)))) - 
+                ((sin(π * y0 * (Float64(p_y) - Float64(k_y)) / Ly) / (Float64(p_y) - Float64(k_y))) -
+                (sin(π * y0 * (Float64(p_y) + Float64(k_y)) / Ly) / (Float64(p_y) + Float64(k_y)))))
     else
         return 0.0
     end
