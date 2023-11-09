@@ -26,6 +26,6 @@ for index in lowest_indices
     wave_function = construct_wave_function(eigenvector, N_x, N_y, x_grid, y_grid)
 
     # writing the wave function to a file
-    filename = "wave_function_$index.dat"
+    filename = "wave_function_a_$index.dat"
     write_wave_function_to_file(wave_function, filename)
 end
