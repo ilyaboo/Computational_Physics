@@ -158,9 +158,6 @@ function construct_hamiltonian(Nx::UInt64, Ny::UInt64)::Array{Float64,2}
                     
                     # plugging in potential energy to the Hamiltonian
                     H[k_index, p_index] += potential_energy_contribution
-                    if isnan(potential_energy_contribution)
-                        println("OOOOOPS")
-                    end
 
                     # checkign for symmetry
                     if k_index != p_index
@@ -219,4 +216,70 @@ function construct_wave_function(eigenvector::Array{Float64,1}, N_x::UInt64, N_y
     end
 
     return wave_function
+end
+
+"""
+function that executes the Lanczos algorithm based on
+    `H`, which is the function which returns the Hamiltonian value, `initial_state`,
+    which is the initial state, `num_steps` for the number of iterations of lanczos_iteration
+    and returns a tuple `(eigenvalues, eigenvectors)`
+"""
+function lanczos_iteration(H::Function, initial_state::Vector{Float64}, num_steps::UInt64) :: Tuple{Vector{Float64}, Matrix{Float64}}
+
+    # creating a matrix to store the Krylov subspace vectors
+    Q = Matrix{Float64}(undef, length(initial_state), num_steps)
+
+    # storing diagonal and off-diagonal elements
+    alpha = Vector{Float64}(undef, num_steps)
+    beta = Vector{Float64}(undef, num_steps - 1)
+
+    # normalizing the initial state and moving it
+    # to the first column of Q
+    q = initial_state / norm(initial_state)
+    Q[:, 1] = q
+
+    # applying the hamiltonian for the initial state
+    r = H(q)
+
+    # computing the first diagonal element of the tridiagonal matrix
+    alpha[1] = dot(q, r)
+
+    # updating the residual vector by subtracting the component along q
+    r -= alpha[1] * q
+
+    # computing the first off-diagonal element
+    beta[1] = norm(r)
+
+    # updating q to be the next basis vector of the Krylov subspace
+    q = r / beta[1]
+
+    # iteraing over steps of Lanczos algorithm
+    for j = 2:num_steps
+
+        # recording the current state
+        Q[:, j] = q
+
+        # recording diagonal element
+        r = H(q) - beta[j - 1] * Q[:, j - 1]
+        alpha[j] = dot(q, r)
+
+        # checking if the last step
+        # if not, recording off-diagonal element and updating the state
+        if j < num_steps
+            r -= alpha[j] * q
+            beta[j] = norm(r)
+            q = r / beta[j]
+        end
+    end
+
+    # constructing the tridiagonal matrix
+    T = SymTridiagonal(alpha, beta)
+
+    # obtaining eigenvalues and eigenvectors of the tridiagonal matrix
+    eigenvalues, eigenvectors_T = eigen(T)
+
+    # transforming back the eigenvectors to the original space
+    eigenvectors = Q * eigenvectors_T
+
+    return eigenvalues, eigenvectors
 end
