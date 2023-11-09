@@ -11,10 +11,26 @@ function read_input()::Tuple{UInt64, UInt64}
 end
 
 """
+function which writes eigenvalues to the file
+    given the array of eigenvalues `eigenvalues`
+"""
+function write_eigenvalues(eigenvalues::Array{Float64, 1}, filename::String)
+    
+    f = open(filename, "w")
+
+    # iterating over eigenvalues
+    for value in eigenvalues
+        println(f, value)
+    end
+
+    close(f)
+end
+
+"""
 function whcih writes the wave function `wave_function` to
     the file named `filename`
 """
-function write_wave_function_to_file(wave_function::Array{Float64,2}, filename::String)
+function write_wave_function_to_file(wave_function::Array{Float64, 2}, filename::String)
 
     f = open(filename, "w")
 
