@@ -9,7 +9,7 @@ Hamiltonian = construct_hamiltonian(N_x, N_y)
 eigenvalues, eigenvectors = eigen(Hamiltonian)
 
 # parameters for eigenfunctions writing
-x_grid, y_grid = 100, 200
+x_grid, y_grid = UInt64(100), UInt64(200)
 
 # obtaining 4 lowest eigenvalues
 sorted_indices = sortperm(eigenvalues)
