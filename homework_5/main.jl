@@ -7,6 +7,7 @@ N_x, N_y = read_input()
 # constructing the Hamiltonian, obtaining eigenvalues and eigenvectors
 Hamiltonian = construct_hamiltonian(N_x, N_y)
 eigenvalues, eigenvectors = eigen(Hamiltonian)
+write_eigenvalues(eigenvalues, "eigenvalues.dat")
 
 # parameters for eigenfunctions writing
 x_grid, y_grid = UInt64(100), UInt64(200)
