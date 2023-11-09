@@ -126,7 +126,53 @@ function construct_hamiltonian(Nx::UInt64, Ny::UInt64)::Array{Float64,2}
     return H
 end
 
-# Construct the Hamiltonian
-Hamiltonian = construct_hamiltonian(Nx, Ny)
-
+# constructing the Hamiltonian
+# Hamiltonian = construct_hamiltonian(Nx, Ny)
 # eigenvalues, eigenvectors = eigen(Hamiltonian)
+
+"""
+function which returns the wave function
+    given the `eigenvector`, `N_x`, `N_y`, `x_grid` and `y_grid`
+"""
+function construct_wave_function(eigenvector::Array{Float64,1}, N_x::UInt64, N_y::UInt64, x_grid::UInt64, y_grid::UInt64)::Array{Float64,2}
+
+    # initializing the wave function 2D array
+    wave_function = zeros(Float64, x_grid, y_grid)
+    
+    # defining the grid spacing
+    dx = Lx / (x_grid - 1)
+    dy = Ly / (y_grid - 1)
+    
+    # iterating over each grid point to calculate the wave function value
+    for i in 1:x_grid
+
+        # current x coordinate
+        x = (i - 1) * dx 
+
+        for j in 1:y_grid
+
+            # current y coordinate
+            y = (j - 1) * dy 
+
+            # initializing the value for this grid point
+            wave_function_value = 0.0
+            
+            # iterating over all combinations of basis functions
+            for kx in 1:N_x
+                for ky in 1:N_y
+
+                    # calculating the single index for this combination
+                    k_index = get_state_index(kx, ky, N_x)
+                    
+                    # adding the contribution from this basis function
+                    wave_function_value += eigenvector[k_index] * f_k_x(x, kx) * g_k_y(y, ky)
+                end
+            end
+            
+            # assigning the calculated value to the wave function at this grid point
+            wave_function[i, j] = wave_function_value
+        end
+    end
+
+    return wave_function
+end
