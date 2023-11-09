@@ -30,7 +30,7 @@ function that returns the kinetic enery term
     of the hamiltonian multiplied by `β`, given `k_x` and `k_y`
 """
 function get_beta_times_kinetic_energy(k_x::UInt64, k_y::UInt64)::Float64
-    return π^2 / 2 * ((Float64(k_x) / L_x)^2 + (Float64(k_y) / L_y)^2)
+    return π^2 / 2 * ((Float64(k_x) / Lx)^2 + (Float64(k_y) / Ly)^2)
 end
 
 """
@@ -52,6 +52,18 @@ function check_if_inside_rectangles(x::Float64, y::Float64)::Bool
         end
     end
     return false
+end
+
+"""
+function which returns the potential given the
+    coordinates `x` and `y`
+"""
+function V(x::Float64, y::Float64)::Float64
+    if check_if_inside_rectangles(x, y)
+        return -V0
+    else
+        return 0.0
+    end 
 end
 
 """
