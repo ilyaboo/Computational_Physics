@@ -126,10 +126,6 @@ function construct_hamiltonian(Nx::UInt64, Ny::UInt64)::Array{Float64,2}
     return H
 end
 
-# constructing the Hamiltonian
-# Hamiltonian = construct_hamiltonian(Nx, Ny)
-# eigenvalues, eigenvectors = eigen(Hamiltonian)
-
 """
 function which returns the wave function
     given the `eigenvector`, `N_x`, `N_y`, `x_grid` and `y_grid`
