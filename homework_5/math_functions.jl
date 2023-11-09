@@ -70,25 +70,21 @@ end
 function that returns the potnetial energy term of the 
     variational Hamiltonian using `k_x`, `p_x`, `k_y`, `p_y`, `x`, `y`
 """
-function get_potential_energy(k_x::UInt64, p_x::UInt64, k_y::UInt64, p_y::UInt64, x::Float64, y::Float64)::Float64
-    if check_if_inside_rectangles(x, y)
-        return V0 / π^2 * 
-                (((sin(π * (x0 + a) * (Float64(p_x) - Float64(k_x)) / Lx) / (Float64(p_x) - Float64(k_x))) -
-                (sin(π * (x0 + a) * (Float64(p_x) + Float64(k_x)) / Lx) / (Float64(p_x) + Float64(k_x)))) - 
-                ((sin(π * x0 * (Float64(p_x) - Float64(k_x)) / Lx) / (Float64(p_x) - Float64(k_x))) -
-                (sin(π * x0 * (Float64(p_x) + Float64(k_x)) / Lx) / (Float64(p_x) + Float64(k_x))))) *
+function get_potential_energy(k_x::UInt64, p_x::UInt64, k_y::UInt64, p_y::UInt64)::Float64
+    return V0 / π^2 * 
+            (((sin(π * (x0 + a) * (Float64(p_x) - Float64(k_x)) / Lx) / (Float64(p_x) - Float64(k_x))) -
+            (sin(π * (x0 + a) * (Float64(p_x) + Float64(k_x)) / Lx) / (Float64(p_x) + Float64(k_x)))) - 
+            ((sin(π * x0 * (Float64(p_x) - Float64(k_x)) / Lx) / (Float64(p_x) - Float64(k_x))) -
+            (sin(π * x0 * (Float64(p_x) + Float64(k_x)) / Lx) / (Float64(p_x) + Float64(k_x))))) *
 
-                (((sin(π * (Ly - y0) * (Float64(p_y) - Float64(k_y)) / Ly) / (Float64(p_y) - Float64(k_y))) -
-                (sin(π * (Ly - y0) * (Float64(p_y) + Float64(k_y)) / Ly) / (Float64(p_y) + Float64(k_y)))) - 
-                ((sin(π * (Ly - y0 - b) * (Float64(p_y) - Float64(k_y)) / Ly) / (Float64(p_y) - Float64(k_y))) -
-                (sin(π * (Ly - y0 - b) * (Float64(p_y) + Float64(k_y)) / Ly) / (Float64(p_y) + Float64(k_y)))) +
-                ((sin(π * (y0 + b) * (Float64(p_y) - Float64(k_y)) / Ly) / (Float64(p_y) - Float64(k_y))) -
-                (sin(π * (y0 + b) * (Float64(p_y) + Float64(k_y)) / Ly) / (Float64(p_y) + Float64(k_y)))) - 
-                ((sin(π * y0 * (Float64(p_y) - Float64(k_y)) / Ly) / (Float64(p_y) - Float64(k_y))) -
-                (sin(π * y0 * (Float64(p_y) + Float64(k_y)) / Ly) / (Float64(p_y) + Float64(k_y)))))
-    else
-        return 0.0
-    end
+            (((sin(π * (Ly - y0) * (Float64(p_y) - Float64(k_y)) / Ly) / (Float64(p_y) - Float64(k_y))) -
+            (sin(π * (Ly - y0) * (Float64(p_y) + Float64(k_y)) / Ly) / (Float64(p_y) + Float64(k_y)))) - 
+            ((sin(π * (Ly - y0 - b) * (Float64(p_y) - Float64(k_y)) / Ly) / (Float64(p_y) - Float64(k_y))) -
+            (sin(π * (Ly - y0 - b) * (Float64(p_y) + Float64(k_y)) / Ly) / (Float64(p_y) + Float64(k_y)))) +
+            ((sin(π * (y0 + b) * (Float64(p_y) - Float64(k_y)) / Ly) / (Float64(p_y) - Float64(k_y))) -
+            (sin(π * (y0 + b) * (Float64(p_y) + Float64(k_y)) / Ly) / (Float64(p_y) + Float64(k_y)))) - 
+            ((sin(π * y0 * (Float64(p_y) - Float64(k_y)) / Ly) / (Float64(p_y) - Float64(k_y))) -
+            (sin(π * y0 * (Float64(p_y) + Float64(k_y)) / Ly) / (Float64(p_y) + Float64(k_y)))))
 end
 
 
@@ -121,7 +117,7 @@ function construct_hamiltonian(Nx::UInt64, Ny::UInt64)::Array{Float64,2}
                     p_index = get_state_index(px, py, Nx)
                     
                     # calculating the potential energy contribution
-                    potential_energy_contribution = get_potential_energy(kx, px, ky, py, x, y)
+                    potential_energy_contribution = get_potential_energy(kx, px, ky, py)
                     
                     # plugging in potential energy to the Hamiltonian
                     H[k_index, p_index] += potential_energy_contribution
