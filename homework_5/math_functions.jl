@@ -71,6 +71,43 @@ function that returns the potnetial energy term of the
     variational Hamiltonian using `k_x`, `p_x`, `k_y`, `p_y`, `x`, `y`
 """
 function get_potential_energy(k_x::UInt64, p_x::UInt64, k_y::UInt64, p_y::UInt64)::Float64
+
+    # helper function to safely calculate the sinc function avoiding division by zero
+    function safe_sinc(dividend, divisor)
+        if divisor == 0
+            return 1.0   # sinc(0) = 1
+        else
+            return sin(dividend * divisor) / divisor
+        end
+    end
+    
+    # calculating each term using the safe_sinc function
+    term1_x = safe_sinc(π * (x0 + a) / Lx, Float64(p_x) - Float64(k_x))
+    term2_x = safe_sinc(π * (x0 + a) / Lx, Float64(p_x) + Float64(k_x))
+    term3_x = safe_sinc(π * x0 / Lx, Float64(p_x) - Float64(k_x))
+    term4_x = safe_sinc(π * x0 / Lx, Float64(p_x) + Float64(k_x))
+
+    term1_y = safe_sinc(π * (Ly - y0) / Ly, Float64(p_y) - Float64(k_y))
+    term2_y = safe_sinc(π * (Ly - y0) / Ly, Float64(p_y) + Float64(k_y))
+    term3_y = safe_sinc(π * (Ly - y0 - b) / Ly, Float64(p_y) - Float64(k_y))
+    term4_y = safe_sinc(π * (Ly - y0 - b) / Ly, Float64(p_y) + Float64(k_y))
+    term5_y = safe_sinc(π * (y0 + b) / Ly, Float64(p_y) - Float64(k_y))
+    term6_y = safe_sinc(π * (y0 + b) / Ly, Float64(p_y) + Float64(k_y))
+    term7_y = safe_sinc(π * y0 / Ly, Float64(p_y) - Float64(k_y))
+    term8_y = safe_sinc(π * y0 / Ly, Float64(p_y) + Float64(k_y))
+
+    # combining the terms for the final potential energy contribution
+    potential_energy = V0 / π^2 * ((term1_x - term2_x) - (term3_x - term4_x)) * 
+                                 ((term1_y - term2_y) - (term3_y - term4_y) + 
+                                  (term5_y - term6_y) - (term7_y - term8_y))
+    return potential_energy
+end
+
+"""
+function get_potential_energy(k_x::UInt64, p_x::UInt64, k_y::UInt64, p_y::UInt64)::Float64
+    if p_x == k_x || p_y == k_y
+        return 0.0
+    end
     return V0 / π^2 * 
             (((sin(π * (x0 + a) * (Float64(p_x) - Float64(k_x)) / Lx) / (Float64(p_x) - Float64(k_x))) -
             (sin(π * (x0 + a) * (Float64(p_x) + Float64(k_x)) / Lx) / (Float64(p_x) + Float64(k_x)))) - 
@@ -86,7 +123,7 @@ function get_potential_energy(k_x::UInt64, p_x::UInt64, k_y::UInt64, p_y::UInt64
             ((sin(π * y0 * (Float64(p_y) - Float64(k_y)) / Ly) / (Float64(p_y) - Float64(k_y))) -
             (sin(π * y0 * (Float64(p_y) + Float64(k_y)) / Ly) / (Float64(p_y) + Float64(k_y)))))
 end
-
+"""
 
 """
 function whcih constructs the Hamiltonian matrix
@@ -121,6 +158,9 @@ function construct_hamiltonian(Nx::UInt64, Ny::UInt64)::Array{Float64,2}
                     
                     # plugging in potential energy to the Hamiltonian
                     H[k_index, p_index] += potential_energy_contribution
+                    if isnan(potential_energy_contribution)
+                        println("OOOOOPS")
+                    end
 
                     # checkign for symmetry
                     if k_index != p_index
