@@ -35,8 +35,8 @@ function write_wave_function_to_file(wave_function::Array{Float64, 2}, filename:
     f = open(filename, "w")
 
     # iterating over wave function values
-    for i in 1:size(wave_function, 1)
-        for j in 1:size(wave_function, 2)
+    for j in 1:size(wave_function, 2)
+        for i in 1:size(wave_function, 1)
             print(f, "$(wave_function[i, j]) ")
         end
 
