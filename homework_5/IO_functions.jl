@@ -45,3 +45,19 @@ function write_wave_function_to_file(wave_function::Array{Float64, 2}, filename:
 
     close(f)
 end
+
+"""
+function which writes the energy values stored in
+    `energies` to the corresponding file `filename`
+"""
+function write_energies(energies::Array{Float64, 1}, filename::String)
+
+    f = open(filename, "a")
+
+    for E in energies
+        print(f, E, " ")
+    end
+
+    print(f, "\n")
+    close(f)
+end
