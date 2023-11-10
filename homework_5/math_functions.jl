@@ -158,8 +158,8 @@ function construct_hamiltonian(Nx::UInt64, Ny::UInt64)::Array{Float64,2}
                     
                     # plugging in potential energy to the Hamiltonian
                     H[k_index, p_index] += potential_energy_contribution
-
-                    # checkign for symmetry
+                    
+                    # checking for symmetry
                     if k_index != p_index
                         H[p_index, k_index] = H[k_index, p_index]
                     end
