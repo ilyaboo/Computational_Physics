@@ -12,7 +12,7 @@ write_eigenvalues(eigenvalues, "eigenvalues_a.dat")
 # parameters for eigenfunctions writing
 x_grid, y_grid = UInt64(100), UInt64(200)
 
-# obtaining 4 lowest eigenvalues
+# obtaining 4 lowest eigenvalue indices
 sorted_indices = sortperm(eigenvalues)
 lowest_indices = sorted_indices[1 : 4]
 
