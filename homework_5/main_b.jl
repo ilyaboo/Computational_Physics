@@ -1,8 +1,10 @@
 include("math_functions.jl")
 include("IO_functions.jl")
 
-N_x = UInt64(10)
-N_y = UInt64(10)
+Δ = 0.1
+
+N_x = UInt64(Lx / Δ)
+N_y = UInt64(Lx / Δ)
 
 # constructing Hamiltonian
 H_matrix = construct_hamiltonian(N_x, N_y)
@@ -14,7 +16,7 @@ H = (psi) -> H_matrix * psi
 initial_state = rand(Float64, N_x * N_y)
 
 # setting up the number of Lanczos iterations
-num_steps = UInt64(100)
+num_steps = UInt64(500)
 
 # using Lanczos iteration
 eigenvalues, eigenvectors = lanczos_iteration(H, initial_state, num_steps)
