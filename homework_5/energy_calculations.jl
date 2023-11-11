@@ -33,9 +33,11 @@ function energies_b()
     f = open("energies_b.dat", "w")
     close(f)
 
-    for i in 2:1:40
-        N_x = UInt64(i)
-        N_y = UInt64(i)
+    for i in [0.2, 0.1, 0.05, 0.025]
+        Δ = i
+
+        N_x = UInt64(Lx / Δ)
+        N_y = UInt64(Lx / Δ)
 
         # constructing Hamiltonian
         H_matrix = construct_hamiltonian(N_x, N_y)
@@ -46,17 +48,20 @@ function energies_b()
         # creating initial state for the Lanczos iteration
         initial_state = rand(Float64, N_x * N_y)
 
-        # setting up the number of Lanczos iterations
-        num_steps = UInt64(100)
+        # iterating over numbers of steps
+        for j in 20:10:500
 
-        # using Lanczos iteration
-        eigenvalues, _ = lanczos_iteration(H, initial_state, num_steps)
+            num_steps = UInt64(j)
 
-        # obtaining 4 lowest eigenvalues
-        sorted_eigenvalues = sort!(eigenvalues)[1 : 4]
-        sorted_eigenvalues = sorted_eigenvalues ./ β
+            # using Lanczos iteration
+            eigenvalues, _ = lanczos_iteration(H, initial_state, num_steps)
 
-        write_energies(sorted_eigenvalues, "energies_b.dat")
+            # obtaining 4 lowest eigenvalues
+            sorted_eigenvalues = sort!(eigenvalues)[1 : 4]
+            sorted_eigenvalues = sorted_eigenvalues ./ β
+
+            write_energies(sorted_eigenvalues, "energies_b.dat")
+        end
     end
 end
 
