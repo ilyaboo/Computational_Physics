@@ -16,8 +16,8 @@ def plot_prob_density(filepath: str):
     # defining the plot parameters
     plt.imshow(function, extent = (0, function.shape[1], 0, function.shape[0]), origin = 'lower', cmap = 'viridis')
     plt.colorbar(label = 'Probability Density Scale')
-    plt.xlabel('X coordinate')
-    plt.ylabel('Y coordinate')
+    plt.xlabel('X coordinate, nm * 100')
+    plt.ylabel('Y coordinate, nm * 100')
     plt.title('Probability Density Inside a Quantum Dot')
     plt.show()
 
