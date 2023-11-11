@@ -1,7 +1,7 @@
 include("math_functions.jl")
 include("IO_functions.jl")
 
-Δ = 0.1
+Δ = 0.05
 
 N_x = UInt64(Lx / Δ)
 N_y = UInt64(Lx / Δ)
