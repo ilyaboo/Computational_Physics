@@ -1,4 +1,5 @@
 using Statistics
+using Random
 
 """
 function which calculates magnetization `m` of the state
@@ -73,4 +74,24 @@ function get_energy_change(state::Vector{Vector{Int64}}, x::Int64, y::Int64)::Fl
     end
 
     return -Float64(total_energy_change)
+end
+
+"""
+function which returns a boolean result on whether
+    the spin should be flipped or not using the current
+    `state` and coordinates `x` and `y` of the particle considered
+"""
+function should_flip(state::Vector{Vector{Int64}}, x::Int64, y::Int64)::Bool
+
+    # calculating energy change
+    delta_energy = get_energy_change(state, x, y)
+
+    # if energy change is negative (energy decreased), accept the change
+    if delta_energy <= 0
+        return true
+    
+    # otherwise, consider probability
+    else
+        return rand() < exp(-delta_energy / T)
+    end
 end
