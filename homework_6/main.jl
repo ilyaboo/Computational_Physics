@@ -12,18 +12,20 @@ filenmae_write_graphing_data = "graphing.dat"
 # resetting output files if they exist
 tmp = open(filenmae_write_bin_averages, "w")
 close(tmp)
+tmp = open(filenmae_write_graphing_data, "w")
+close(tmp)
 
 # reading input from the file
 L, T, bins, reps, steps = read_input(filename_read)
+
+# calculating the size of one bin
+bin_size = ceil(UInt64, reps / bins)
 
 # сhecking if the number of steps is not zero (first part)
 if steps != 0
 
     # storing averages of bins for all steps
     bins_averages::Vector{Vector{Float64}} = [[] for _ in 1:steps]
-
-    # calculating the size of one bin
-    bin_size = ceil(UInt64, reps / bins)
 
     # 2D vector for storing magnetizations for different reps,
     # where i-th row represents magnetizations on the n-th step
@@ -98,4 +100,66 @@ if steps != 0
 # otherwise, 0 steps (second part)
 else
 
+    # sotring bin averages
+    bin_averages::Vector{Float64} = []
+
+    # sotring times of current bin
+    local bin_times::Vector{Float64} = []
+
+    # running the simulation
+    for _ in 1:reps
+
+        # initial state
+        state::Vector{Vector{Int64}} = [[1 for _ in 1:L] for _ in 1:L]
+
+        # keeping track of total magnetization
+        M::Int64 = L^2
+
+        # repeating Monte Carlo algorithm until reach M = 0
+        step_number::UInt64 = 1
+        while true
+
+            # condcuting Monte Carlo algorithm
+            M, MC_step = conduct_Monte_Carlo_2(state, M)
+
+            # checking if obtained zero magnetization
+            if MC_step != -1
+
+                # adding the result to bin_times
+                push!(bin_times, step_number - 1 + MC_step / L^2)
+
+                break
+            end
+            
+            # incrementing step number
+            step_number += 1
+        end
+
+        # checking if filled the bin
+        if length(bin_times) == bin_size
+
+            avg = mean(bin_times)
+
+            # adding the average
+            push!(bin_averages, avg)
+
+            # writing the average to the file
+            write_time(avg, filenmae_write_bin_averages)
+            
+            # resetting bin times
+            bin_times = []
+        end
+    end
+
+    # checkign is something left in the last bin
+    if length(bin_times) != 0
+
+        avg = mean(bin_times)
+
+        # adding the average
+        push!(bin_averages, avg)
+
+        # writing the average to the file
+        write_time(avg, filenmae_write_bin_averages)
+    end
 end
