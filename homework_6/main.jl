@@ -42,22 +42,8 @@ if steps != 0
         # conducting steps for Monte Carlo simulation
         for step in 1:steps
 
-            # applying Monte Carlo algorithm, by conducting N = L^2 flip attempts
-            for _ in 1:L^2
-
-                # picking a random particle
-                x_rand, y_rand = rand(1:L), rand(1:L)
-
-                # checking if it will be flipped
-                if should_flip(state, x_rand, y_rand)
-
-                    # updating the total magnetization
-                    M -= 2 * state[x_rand][y_rand]
-
-                    # updating the flip in the state
-                    state[x_rand][y_rand] *= -1
-                end
-            end
+            # applying Monte Carlo algorithm
+            M = conduct_Monte_Carlo(state, M)
 
             # adding new magnetization to the bin
             push!(magnetizations_bin[step], M / L^2)
@@ -110,4 +96,6 @@ if steps != 0
     write_steps_averages_and_errors(steps_averages, steps_errors, filenmae_write_graphing_data)
 
 # otherwise, 0 steps (second part)
+else
+
 end
