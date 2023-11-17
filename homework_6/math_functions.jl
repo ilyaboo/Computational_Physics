@@ -108,7 +108,7 @@ function conduct_Monte_Carlo(state::Vector{Vector{Int64}}, M::Int64)::Int64
     for _ in 1:lenght(state) * length(state[1])
 
         # picking a random particle
-        x_rand, y_rand = rand(1:lenght(state)), rand(1:length(state[1]))
+        x_rand, y_rand = rand(1:length(state)), rand(1:length(state[1]))
 
         # checking if it will be flipped
         if should_flip(state, x_rand, y_rand)
