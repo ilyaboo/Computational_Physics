@@ -95,3 +95,31 @@ function should_flip(state::Vector{Vector{Int64}}, x::UInt64, y::UInt64)::Bool
         return rand() < exp(-delta_energy / T)
     end
 end
+
+"""
+function which conducts Monte Carlo algorithm with 
+    a given 2D array `state` and uses initial total
+    magnetization `M` to calculate the its new value,
+    which is then returned
+"""
+function conduct_Monte_Carlo(state::Vecotor{Vector{Int64}}, M::Int64)::Int64
+
+    # applying Monte Carlo algorithm, by conducting N = L^2 flip attempts
+    for _ in 1:lenght(state) * length(state[1])
+
+        # picking a random particle
+        x_rand, y_rand = rand(1:lenght(state)), rand(1:length(state[1]))
+
+        # checking if it will be flipped
+        if should_flip(state, x_rand, y_rand)
+
+            # updating the total magnetization
+            M -= 2 * state[x_rand][y_rand]
+
+            # updating the spin in the state
+            state[x_rand][y_rand] *= -1
+        end
+    end
+
+    return M
+end
