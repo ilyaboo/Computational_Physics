@@ -25,7 +25,7 @@ function bin_average_and_error(magnetization_runs_bin::Vector{Vector{Float64}}):
         push!(averages, average_value)
 
         # calculating error as maximum absolute deviation from average
-        push!(errors, max((max(magnetization_runs_bin[step]) - average_value), (average_value - min(magnetization_runs_bin[step]))))
+        push!(errors, max((maximum(magnetization_runs_bin[step]) - average_value), (average_value - minimum(magnetization_runs_bin[step]))))
     end
     
     return averages, errors
