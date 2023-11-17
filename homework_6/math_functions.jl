@@ -105,13 +105,13 @@ function which conducts Monte Carlo algorithm with
 function conduct_Monte_Carlo(state::Vector{Vector{Int64}}, M::Int64)::Int64
 
     # applying Monte Carlo algorithm, by conducting N = L^2 flip attempts
-    for _ in 1:lenght(state) * length(state[1])
+    for _ in 1:length(state) * length(state[1])
 
         # picking a random particle
         x_rand, y_rand = rand(1:length(state)), rand(1:length(state[1]))
 
         # checking if it will be flipped
-        if should_flip(state, x_rand, y_rand)
+        if should_flip(state, UInt64(x_rand), UInt64(y_rand))
 
             # updating the total magnetization
             M -= 2 * state[x_rand][y_rand]
