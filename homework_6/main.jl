@@ -138,13 +138,13 @@ else
         # checking if filled the bin
         if length(bin_times) == bin_size
 
-            avg = mean(bin_times)
+            avg_time = mean(bin_times)
 
             # adding the average
-            push!(bin_averages, avg)
+            push!(bin_averages, avg_time)
 
             # writing the average to the file
-            write_time(avg, filenmae_write_bin_averages)
+            write_time(avg_time, filenmae_write_bin_averages)
             
             # resetting bin times
             bin_times = []
@@ -154,12 +154,10 @@ else
     # checkign is something left in the last bin
     if length(bin_times) != 0
 
-        avg = mean(bin_times)
-
         # adding the average
-        push!(bin_averages, avg)
+        push!(bin_averages, mean(bin_times))
 
         # writing the average to the file
-        write_time(avg, filenmae_write_bin_averages)
+        write_time(mean(bin_times), filenmae_write_bin_averages)
     end
 end
