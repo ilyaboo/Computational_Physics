@@ -1,6 +1,8 @@
 include("IO_functions.jl")
 include("math_functions.jl")
 
+using Statistics
+
 # setting the name for input and output files
 filename_read = "read.in"
 filenmae_write_bin_averages = "res.dat"
