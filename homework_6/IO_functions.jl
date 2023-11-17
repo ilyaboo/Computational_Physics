@@ -24,3 +24,15 @@ function write_bin_averages(bins_averages::Vector{Vector{Float64}}, filename::st
     end
     close(f)
 end
+
+"""
+function which uses vectos `steps_averages`, `steps_errors` and
+    records them (and step values) to the file `filename` for future graphing
+"""
+function write_steps_averages_and_errors(steps_averages::Vector{Float64}, steps_errors::Vector{Float64}, filename::str)
+    f = open(filename, "w")
+    for i in 1:length(steps_averages)
+        println(f, i, steps_averages[i], steps_errors[i])
+    end
+    close(f)
+end
