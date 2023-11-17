@@ -17,7 +17,7 @@ end
 function that calculate the average magnetizations and errors
     for a given values of a bin
 """
-function bin_average_and_error(magnetization_runs_bin::Vector{Vector{Float64}})::Tuple{Vector{Float64}, Vector{Float64}}
+function bins_average_and_error(magnetization_runs_bin::Vector{Vector{Float64}})::Tuple{Vector{Float64}, Vector{Float64}}
     averages::Vector{Float64} = []
     errors::Vector{Float64} = []
     for step in 1:length(magnetization_runs_bin)
