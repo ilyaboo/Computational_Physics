@@ -37,14 +37,14 @@ function which returns the change in energy caused by the flip
     of the spin of the considered particle, using current state
     `state`, as well as coordinates of the particle `x` and `y`
 """
-function get_energy_change(state::Vector{Vector{Int64}}, x::Int64, y::Int64)::Float64
+function get_energy_change(state::Vector{Vector{Int64}}, x::UInt64, y::UInt64)::Float64
 
     # storing the total energy change
     total_energy_change::Int64 = 0
 
     # vectors for x and y values of the neighbors
-    x_vals_neigh::Vector{Int64} = [x - 1, x, x + 1]
-    y_vals_neigh::Vector{Int64} = [y - 1, y, y + 1]
+    x_vals_neigh::Vector{UInt64} = [x - 1, x, x + 1]
+    y_vals_neigh::Vector{UInt64} = [y - 1, y, y + 1]
 
     # wrapping around coordinates if necessary
     if x_vals_neigh[1] == 0
@@ -81,7 +81,7 @@ function which returns a boolean result on whether
     the spin should be flipped or not using the current
     `state` and coordinates `x` and `y` of the particle considered
 """
-function should_flip(state::Vector{Vector{Int64}}, x::Int64, y::Int64)::Bool
+function should_flip(state::Vector{Vector{Int64}}, x::UInt64, y::UInt64)::Bool
 
     # calculating energy change
     delta_energy = get_energy_change(state, x, y)
