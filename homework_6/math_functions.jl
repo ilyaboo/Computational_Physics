@@ -102,7 +102,7 @@ function which conducts Monte Carlo algorithm with
     magnetization `M` to calculate the its new value,
     which is then returned
 """
-function conduct_Monte_Carlo(state::Vecotor{Vector{Int64}}, M::Int64)::Int64
+function conduct_Monte_Carlo(state::Vector{Vector{Int64}}, M::Int64)::Int64
 
     # applying Monte Carlo algorithm, by conducting N = L^2 flip attempts
     for _ in 1:lenght(state) * length(state[1])
