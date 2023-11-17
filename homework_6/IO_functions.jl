@@ -14,7 +14,13 @@ function read_input(filename::str)::Tuple{UInt64, Float64, UInt64, UInt64, UInt6
 end
 
 """
-function which writes the average values of magnetization
-    on each step `t` for a bin to the file named `filename`
+function which appends the latest average values of magnetization
+    for all steps from `bins_averages` to the file named `filename`
 """
-function write_magnitizations_bin(filename::str)
+function write_bin_averages(bins_averages::Vector{Vector{Float64}}, filename::str)
+    f = open(filename, "a")
+    for step in 1:length(bins_averages)
+        println(f, step, bins_averages[step][length(bins_averages[step])])
+    end
+    close(f)
+end
