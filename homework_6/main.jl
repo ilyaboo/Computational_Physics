@@ -2,6 +2,7 @@ include("IO_functions.jl")
 include("math_functions.jl")
 
 using Statistics
+using Random
 
 # setting the name for input and output files
 filename_read = "read.in"
@@ -35,20 +36,30 @@ if steps == zero
         # initial state
         state::Vector{Vector{Int64}} = [[1 for _ in 1:L] for _ in 1:L]
 
+        # keeping track of total magnetization
+        M::Int64 = L^2
+
         # conducting steps for Monte Carlo simulation
         for step in 1:steps
 
-            # creating new state
-            state_new::Vector{Vector{Int64}} = [[0 for _ in 1:L] for _ in 1:L]
+            # applying Monte Carlo algorithm, by conducting N = L^2 flip attempts
+            for _ in 1:L^2
 
-            # applying Monte Carlo algorithm
-            ...
-            
+                # picking a random particle
+                x_rand, y_rand = rand(1:L), rand(1:L)
+
+                # checking if it will be flipped
+                if should_flip(state, x_rand, y_rand)
+
+                    # updating the total magnetization
+                    M -= 2 * state[x_rand][y_rand]
+
+                    # updating the flip in the state
+                    state[x_rand][y_rand] *= -1
+                end
+
             # adding new magnetization to the bin
-            push!(magnetizations_bin[step], get_magnetization(state_new))
-
-            # updating current state
-            state = state_new
+            push!(magnetizations_bin[step], M / L^2)
         end
 
         # checking if the bin is full
