@@ -42,8 +42,22 @@ function get_energy_change(state::Vector{Vector{Int64}}, x::Int64, y::Int64)::Fl
     total_energy_change::Int64 = 0
 
     # vectors for x and y values of the neighbors
-    x_vals_neigh::Vector{Int64} = [max(x - 1, 1), x, min(x + 1, length(state))]
-    y_vals_neigh::Vector{Int64} = [max(y - 1, 1), y, min(y + 1, length(state[1]))]
+    x_vals_neigh::Vector{Int64} = [x - 1, x, x + 1]
+    y_vals_neigh::Vector{Int64} = [y - 1, y, y + 1]
+
+    # wrapping around coordinates if necessary
+    if x_vals_neigh[1] == 0
+        x_vals_neigh[1] = length(state)
+    end
+    if y_vals_neigh[1] == 0
+        y_vals_neigh[1] = length(state[0])
+    end
+    if x_vals_neigh[1] == length(state) + 1
+        x_vals_neigh[1] = 1
+    end
+    if y_vals_neigh[1] == length(state[0]) + 1
+        y_vals_neigh[1] = 1
+    end
 
     # considering all neighbors
     for x_val in x_vals_neigh
@@ -51,7 +65,7 @@ function get_energy_change(state::Vector{Vector{Int64}}, x::Int64, y::Int64)::Fl
 
             # checking that it is not the coordinated of the original particle
             if !(x_val == x && y_val == y)
-
+                
                 # updating total_energy
                 total_energy_change += state[x][y] * state[x_val][y_val]
             end
