@@ -17,15 +17,15 @@ end
 function that calculate the average magnetizations and errors
     for a given values of a bin
 """
-function bins_average_and_error(magnetization_runs_bin::Vector{Vector{Float64}})::Tuple{Vector{Float64}, Vector{Float64}}
+function bins_average_and_error(magnetization_runs_bins::Vector{Vector{Float64}})::Tuple{Vector{Float64}, Vector{Float64}}
     averages::Vector{Float64} = []
     errors::Vector{Float64} = []
-    for step in 1:length(magnetization_runs_bin)
-        average_value = mean(magnetization_runs_bin[step])
+    for step in 1:length(magnetization_runs_bins)
+        average_value = mean(magnetization_runs_bins[step])
         push!(averages, average_value)
 
         # calculating error as maximum absolute deviation from average
-        push!(errors, max((maximum(magnetization_runs_bin[step]) - average_value), (average_value - minimum(magnetization_runs_bin[step]))))
+        push!(errors, max((maximum(magnetization_runs_bins[step]) - average_value), (average_value - minimum(magnetization_runs_bins[step]))))
     end
     
     return averages, errors
