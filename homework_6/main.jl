@@ -11,22 +11,22 @@ L, T, bins, reps, steps = read_input(filename_read)
 # сhecking if the number of steps is not zero (first part)
 if steps == zero
 
-    # 2D vector for storing magnetizations for different runs,
-    # where i-th row represents magnetizations on the n-th step
-    magnetization_runs::Vector{Vector{Float64}} = [[] for _ in 1:bins]
+    # storing averages of bins for all steps
+    bins_averages::Vector{Vector{Float64}} = [[] for _ in 1:steps]
 
     # calculating the size of one bin
-    bin_size = ceil(UInt64, steps / bins)
+    bin_size = ceil(UInt64, reps / bins)
+
+    # 2D vector for storing magnetizations for different reps,
+    # where i-th row represents magnetizations on the n-th step
+    # until reaches full capacity of bin_size
+    magnetizations_bin::Vector{Vector{Float64}} = [[] for _ in 1:steps]
 
     # running the simulation reps number of times
     for _ in 1:reps
 
         # initial state
         state::Vector{Vector{Int64}} = [[1 for _ in 1:L] for _ in 1:L]
-
-        # storing magnetizations of the bin
-        bin_vals::Vector{Float64} = []
-        bin_num = 1
 
         # conducting steps for Monte Carlo simulation
         for step in 1:steps
@@ -38,35 +38,42 @@ if steps == zero
             ...
             
             # adding new magnetization to the bin
-            push!(bin_vals, get_magnetization(state_new))
-
-            # checking if the bin is full
-            if length(bin_vals) == bin_size
-
-                # recording new magnetization
-                push!(magnetization_runs[bin_num], mean(bin_vals))
-                bin_num += 1
-                bin_vals = []
-            end
+            push!(magnetizations_bin[step], get_magnetization(state_new))
 
             # updating current state
             state = state_new
         end
 
-        # if the number of steps was not divisible by number of bins
-        # adding the remaining bin_value
-        if length(bin_vals) != 0
+        # checking if the bin is full
+        if length(magnetizations_bin[1]) == bin_size
 
-            # recording new magnetization
-            push!(magnetization_runs[bin_num], mean(bin_vals))
+            # iterating over time steps
+            for step in 1:steps
+
+                # adding the averages of the bin for each step
+                push!(bins_averages[step], mean(magnetizations_bin[step]))
+            end
+
+            # resetting the bin
+            magnetizations_bin = []
         end
-
     end
 
-    # creatring a vector of average magnetizations on each step
-    average_magnetizations::Vector{Float64} = [mean(magnetization_runs[i]) for i in 1:length(magnetization_runs)]
+    # if number of reps is not divisible by the number of bins,
+    # add the accumulated results for the last bin
+    if length(magnetizations_bin[1]) != 0
 
-    # recording average magnetizations
+        # iterating over time steps
+        for step in 1:steps
+
+            # adding the averages of the bin for each step
+            push!(bins_averages[step], mean(magnetizations_bin[step]))
+        end
+    end
+    
+    # calculating averages among bins for each timestep
+    # and corresponding errors
+    steps_averages, steps_errors = bins_average_and_error(bins_averages)
 
 # otherwise, 0 steps (second part)
 else
