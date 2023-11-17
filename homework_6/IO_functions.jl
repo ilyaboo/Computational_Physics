@@ -36,3 +36,13 @@ function write_steps_averages_and_errors(steps_averages::Vector{Float64}, steps_
     end
     close(f)
 end
+
+"""
+function whcih appends the average time `time` to the
+    file `filename`
+"""
+function write_time(time::Float64, filename::String)
+    f = open(filename, "a")
+    println(f, time)
+    close(f)
+end
