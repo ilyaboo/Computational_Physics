@@ -17,7 +17,7 @@ close(tmp)
 L, T, bins, reps, steps = read_input(filename_read)
 
 # сhecking if the number of steps is not zero (first part)
-if steps == 0
+if steps != 0
 
     # storing averages of bins for all steps
     bins_averages::Vector{Vector{Float64}} = [[] for _ in 1:steps]
@@ -28,7 +28,7 @@ if steps == 0
     # 2D vector for storing magnetizations for different reps,
     # where i-th row represents magnetizations on the n-th step
     # until reaches full capacity of bin_size
-    magnetizations_bin::Vector{Vector{Float64}} = [[] for _ in 1:steps]
+    local magnetizations_bin::Vector{Vector{Float64}} = [[] for _ in 1:steps]
 
     # running the simulation reps number of times
     for _ in 1:reps
@@ -80,7 +80,7 @@ if steps == 0
             write_bin_averages(bins_averages, filenmae_write_bin_averages)
 
             # resetting the bin
-            magnetizations_bin = []
+            magnetizations_bin = [[] for _ in 1:steps]
         end
     end
 
