@@ -57,6 +57,7 @@ if steps == 0
                     # updating the flip in the state
                     state[x_rand][y_rand] *= -1
                 end
+            end
 
             # adding new magnetization to the bin
             push!(magnetizations_bin[step], M / L^2)
