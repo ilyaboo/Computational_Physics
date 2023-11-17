@@ -30,3 +30,33 @@ function bins_average_and_error(magnetization_runs_bins::Vector{Vector{Float64}}
     
     return averages, errors
 end
+
+"""
+function which returns the change in energy caused by the flip
+    of the spin of the considered particle, using current state
+    `state`, as well as coordinates of the particle `x` and `y`
+"""
+function get_energy_change(state::Vector{Vector{Int64}}, x::Int64, y::Int64)::Float64
+
+    # storing the total energy change
+    total_energy_change::Int64 = 0
+
+    # vectors for x and y values of the neighbors
+    x_vals_neigh::Vector{Int64} = [max(x - 1, 1), x, min(x + 1, length(state))]
+    y_vals_neigh::Vector{Int64} = [max(y - 1, 1), y, min(y + 1, length(state[1]))]
+
+    # considering all neighbors
+    for x_val in x_vals_neigh
+        for y_val in y_vals_neigh
+
+            # checking that it is not the coordinated of the original particle
+            if !(x_val == x && y_val == y)
+
+                # updating total_energy
+                total_energy_change += state[x][y] * state[x_val][y_val]
+            end
+        end
+    end
+
+    return -Float64(total_energy_change)
+end
