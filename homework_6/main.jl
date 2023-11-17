@@ -4,6 +4,7 @@ include("math_functions.jl")
 # setting the name for input and output files
 filename_read = "read.in"
 filenmae_write_bin_averages = "res.dat"
+filenmae_write_graphing_data = "graphing.dat"
 
 # resetting output files if they exist
 tmp = open(filenmae_write_bin_averages, "w")
@@ -91,5 +92,10 @@ if steps == zero
     # and corresponding errors
     steps_averages, steps_errors = bins_average_and_error(bins_averages)
 
+    # recording steps_averages and steps_errors for future graphing
+    write_steps_averages_and_errors(steps_averages, steps_errors, filenmae_write_graphing_data)
+
 # otherwise, 0 steps (second part)
 else
+    ...
+end
