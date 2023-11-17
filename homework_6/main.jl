@@ -3,7 +3,11 @@ include("math_functions.jl")
 
 # setting the name for input and output files
 filename_read = "read.in"
-filenmae_write_magnetizations = "res.dat"
+filenmae_write_bin_averages = "res.dat"
+
+# resetting output files if they exist
+tmp = open(filenmae_write_bin_averages, "w")
+close(tmp)
 
 # reading input from the file
 L, T, bins, reps, steps = read_input(filename_read)
@@ -50,9 +54,15 @@ if steps == zero
             # iterating over time steps
             for step in 1:steps
 
+                # calculatin the average for the timestep
+                avg_val = mean(magnetizations_bin[step])
+
                 # adding the averages of the bin for each step
-                push!(bins_averages[step], mean(magnetizations_bin[step]))
+                push!(bins_averages[step], avg_val)
             end
+
+            # writing bin averages to a file
+            write_bin_averages(bins_averages, filenmae_write_bin_averages)
 
             # resetting the bin
             magnetizations_bin = []
@@ -66,9 +76,15 @@ if steps == zero
         # iterating over time steps
         for step in 1:steps
 
+            # calculatin the average for the timestep
+            avg_val = mean(magnetizations_bin[step])
+
             # adding the averages of the bin for each step
-            push!(bins_averages[step], mean(magnetizations_bin[step]))
+            push!(bins_averages[step], avg_val)
         end
+
+        # writing bin averages to a file
+        write_bin_averages(bins_averages, filenmae_write_bin_averages)
     end
     
     # calculating averages among bins for each timestep
