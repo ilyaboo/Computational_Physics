@@ -50,12 +50,12 @@ function get_energy_change(state::Vector{Vector{Int64}}, x::Int64, y::Int64)::Fl
         x_vals_neigh[1] = length(state)
     end
     if y_vals_neigh[1] == 0
-        y_vals_neigh[1] = length(state[0])
+        y_vals_neigh[1] = length(state[1])
     end
     if x_vals_neigh[1] == length(state) + 1
         x_vals_neigh[1] = 1
     end
-    if y_vals_neigh[1] == length(state[0]) + 1
+    if y_vals_neigh[1] == length(state[1]) + 1
         y_vals_neigh[1] = 1
     end
 
