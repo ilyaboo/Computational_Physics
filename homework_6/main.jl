@@ -17,7 +17,7 @@ close(tmp)
 L, T, bins, reps, steps = read_input(filename_read)
 
 # сhecking if the number of steps is not zero (first part)
-if steps == zero
+if steps == 0
 
     # storing averages of bins for all steps
     bins_averages::Vector{Vector{Float64}} = [[] for _ in 1:steps]
@@ -109,6 +109,4 @@ if steps == zero
     write_steps_averages_and_errors(steps_averages, steps_errors, filenmae_write_graphing_data)
 
 # otherwise, 0 steps (second part)
-else
-    ...
 end
