@@ -1,9 +1,9 @@
 """
 function which reads `L`, `T`, `bins`, `reps` and `steps`
-    from the `read.in` file and returns the tuple with values
+    from the `filename` file and returns the tuple with values
 """
-function read_input()::Tuple{UInt64, Float64, UInt64, UInt64, UInt64}
-    f = open("read.in", "r")
+function read_input(filename::str)::Tuple{UInt64, Float64, UInt64, UInt64, UInt64}
+    f = open(filename, "r")
     L = parse(UInt64, readline(f))
     T = parse(Float64, readline(f))
     bins = parse(UInt64, readline(f))
@@ -12,3 +12,9 @@ function read_input()::Tuple{UInt64, Float64, UInt64, UInt64, UInt64}
     close(f)
     return L, T, bins, reps, steps
 end
+
+"""
+function which writes the average values of magnetization
+    on each step `t` for a bin to the file named `filename`
+"""
+function write_magnitizations_bin(filename::str)
