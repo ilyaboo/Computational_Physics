@@ -123,3 +123,40 @@ function conduct_Monte_Carlo(state::Vector{Vector{Int64}}, M::Int64)::Int64
 
     return M
 end
+
+"""
+function which conducts Monte Carlo algorithm with 
+    a given 2D array `state` and uses initial total
+    magnetization `M` to calculate the its new value,
+    which is then returned
+    similar to conduct_Monte_Carlo, but returns early
+    if the zero magnetization was reached, returning the flip number
+    `flip_num`, after which magnetization became 0
+"""
+function conduct_Monte_Carlo_2(state::Vector{Vector{Int64}}, M::Int64)::Tuple{Int64, Int64}
+
+    # applying Monte Carlo algorithm, by conducting N = L^2 flip attempts
+    for flip in 1:length(state) * length(state[1])
+
+        # picking a random particle
+        x_rand, y_rand = rand(1:length(state)), rand(1:length(state[1]))
+
+        # checking if it will be flipped
+        if should_flip(state, UInt64(x_rand), UInt64(y_rand))
+
+            # updating the total magnetization
+            M -= 2 * state[x_rand][y_rand]
+
+            # checking if magnetization became zero
+            if M == 0
+                return M, flip
+            end
+
+            # updating the spin in the state
+            state[x_rand][y_rand] *= -1
+        end
+    end
+
+    # didn't reach zero
+    return M, -1
+end
