@@ -45,7 +45,7 @@ if steps != 0
         for step in 1:steps
 
             # applying Monte Carlo algorithm
-            M = conduct_Monte_Carlo(state, M)
+            M = conduct_Monte_Carlo(state, M, T)
 
             # adding new magnetization to the bin
             push!(magnetizations_bin[step], M / L^2)
@@ -120,7 +120,7 @@ else
         while true
 
             # condcuting Monte Carlo algorithm
-            M, MC_step = conduct_Monte_Carlo_2(state, M)
+            M, MC_step = conduct_Monte_Carlo_2(state, M, T)
 
             # checking if obtained zero magnetization
             if MC_step != -1

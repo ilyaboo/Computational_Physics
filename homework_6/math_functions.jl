@@ -87,7 +87,7 @@ function which returns a boolean result on whether
     the spin should be flipped or not using the current
     `state` and coordinates `x` and `y` of the particle considered
 """
-function should_flip(state::Vector{Vector{Int64}}, x::UInt64, y::UInt64)::Bool
+function should_flip(state::Vector{Vector{Int64}}, x::UInt64, y::UInt64, T::Float64)::Bool
 
     # calculating energy change
     delta_energy = get_energy_change(state, x, y)
@@ -108,7 +108,7 @@ function which conducts Monte Carlo algorithm with
     magnetization `M` to calculate the its new value,
     which is then returned
 """
-function conduct_Monte_Carlo(state::Vector{Vector{Int64}}, M::Int64)::Int64
+function conduct_Monte_Carlo(state::Vector{Vector{Int64}}, M::Int64, T::Float64)::Int64
 
     # applying Monte Carlo algorithm, by conducting N = L^2 flip attempts
     for _ in 1:length(state) * length(state[1])
@@ -117,7 +117,7 @@ function conduct_Monte_Carlo(state::Vector{Vector{Int64}}, M::Int64)::Int64
         x_rand, y_rand = rand(1:length(state)), rand(1:length(state[1]))
 
         # checking if it will be flipped
-        if should_flip(state, UInt64(x_rand), UInt64(y_rand))
+        if should_flip(state, UInt64(x_rand), UInt64(y_rand), T)
 
             # updating the total magnetization
             M -= 2 * state[x_rand][y_rand]
@@ -139,7 +139,7 @@ function which conducts Monte Carlo algorithm with
     if the zero magnetization was reached, returning the flip number
     `flip_num`, after which magnetization became 0
 """
-function conduct_Monte_Carlo_2(state::Vector{Vector{Int64}}, M::Int64)::Tuple{Int64, Int64}
+function conduct_Monte_Carlo_2(state::Vector{Vector{Int64}}, M::Int64, T::Float64)::Tuple{Int64, Int64}
 
     # applying Monte Carlo algorithm, by conducting N = L^2 flip attempts
     for flip in 1:length(state) * length(state[1])
@@ -148,7 +148,7 @@ function conduct_Monte_Carlo_2(state::Vector{Vector{Int64}}, M::Int64)::Tuple{In
         x_rand, y_rand = rand(1:length(state)), rand(1:length(state[1]))
 
         # checking if it will be flipped
-        if should_flip(state, UInt64(x_rand), UInt64(y_rand))
+        if should_flip(state, UInt64(x_rand), UInt64(y_rand), T)
 
             # updating the total magnetization
             M -= 2 * state[x_rand][y_rand]
