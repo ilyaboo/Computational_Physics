@@ -26,6 +26,6 @@ end
 end
 
 @testset "Testing get_energy_change function" begin
-    @test get_energy_change([[1, 1, 1], [1, -1, 1], [1, 1, 1]], UInt64(2), UInt64(2)) == 8.0
-    @test get_energy_change([[1, 1, 1], [1, -1, 1], [1, 1, 1]], UInt64(1), UInt64(1)) == -6.0
+    @test get_energy_change([[1, 1, 1], [1, -1, 1], [1, 1, 1]], UInt64(2), UInt64(2)) == 4.0
+    @test get_energy_change([[1, 1, 1], [1, -1, 1], [1, 1, 1]], UInt64(1), UInt64(1)) == -4.0
 end
