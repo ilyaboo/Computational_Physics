@@ -73,6 +73,12 @@ function get_energy_change(state::Vector{Vector{Int64}}, x::UInt64, y::UInt64)::
         end
     end
 
+    # removing diagonal elements
+    total_energy_change -= (state[x][y] * state[x_vals_neigh[1]][y_vals_neigh[1]] + 
+                            state[x][y] * state[x_vals_neigh[1]][y_vals_neigh[3]] + 
+                            state[x][y] * state[x_vals_neigh[3]][y_vals_neigh[1]] +
+                            state[x][y] * state[x_vals_neigh[3]][y_vals_neigh[3]])
+
     return -Float64(total_energy_change)
 end
 
