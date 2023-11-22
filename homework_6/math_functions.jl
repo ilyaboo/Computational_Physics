@@ -79,7 +79,7 @@ function get_energy_change(state::Vector{Vector{Int64}}, x::UInt64, y::UInt64)::
                             state[x][y] * state[x_vals_neigh[3]][y_vals_neigh[1]] +
                             state[x][y] * state[x_vals_neigh[3]][y_vals_neigh[3]])
 
-    return -Float64(total_energy_change)
+    return 2 * Float64(total_energy_change)
 end
 
 """
