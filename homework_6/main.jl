@@ -160,4 +160,7 @@ else
         # writing the average to the file
         write_time(mean(bin_times), filenmae_write_bin_averages)
     end
+
+    # printing final average
+    println("Average number of steps needed to reach zero magnetization: ", mean(bin_averages))
 end
