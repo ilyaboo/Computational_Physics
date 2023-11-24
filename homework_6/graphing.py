@@ -70,10 +70,12 @@ def graph_magnetizations_log(steps: list[int], magnetizations: list[float], erro
     plt.tight_layout()
     plt.show()
 
-def graph_steps(L_vals: list[int], step_vals: list[int], type: int):
+def graph_steps(step_vals: list[int], type: int):
     # function which produces the graphs for the average number of steps 
     # needed to reach zero magnetization for different values of L
     # type specifies the type of the scales
+
+    L_vals = [2 * (i + 2) for i in range(len(step_vals))]
 
     plt.plot(L_vals, step_vals)
 
@@ -115,5 +117,7 @@ def graph_steps(L_vals: list[int], step_vals: list[int], type: int):
 #steps, magnetizations, errors = get_steps_avergaes_errors("graphing.dat")
 #graph_magnetizations_log(steps, magnetizations, errors, True)
 
-#vals_2 = [182, 838, 3262, 12334, 39257]
+vals_2 = [182, 838, 3262, 12334, 39257]
 #vals_21 = [
+
+graph_steps(vals_2, 1)
