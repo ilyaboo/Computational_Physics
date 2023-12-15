@@ -123,6 +123,8 @@ file = open("read.in", "r")
    tt = parse(Float64, readline(file))  # Annealing time from s=0 to s=1
    nt = parse(Int, readline(file))      # number of time steps
    wf = parse(Int, readline(file))      # save results every wf time step
+   bins = parse(Int, readline(file))    # number of bins
+   reps = parse(Int, readline(file))    # number of random instances of the couplings to be run for each bin
 close(file)
 
 sites = sitetable(nn)
