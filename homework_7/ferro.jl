@@ -224,7 +224,7 @@ for bin in 1:bins
    for i in 1:div(nt, wf)
 
       s = i / div(nt, wf)
-      println(file, s, "  ", bin_averages[1, i], "  ", bin_averages[2, i])
+      println(file, s, "  ", bin_averages[1, i], "  ", bin_errors[1, i], "  ", bin_averages[2, i], "  ", bin_errors[2, i])
   end
 end
 
