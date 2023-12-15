@@ -43,6 +43,36 @@ function ising(nn::Int, sites)
 end
 
 """
+function which constructs vector with the ising energies for each basis state
+using the random couplings provided
+"""
+function ising_with_couplings(nn::Int, sites, couplings)
+   nb = div(nn * (nn - 1), 2)
+   hzz = Vector{Float64}(undef, 2^nn)
+   for a = 0:2^nn - 1
+      ez::Float64 = 0
+      for i = 1:nb
+         s1 = a & (1 << sites[1, i])
+         s2 = a & (1 << sites[2, i])
+
+         # obtaining the coupling value for this pair of sites
+         Jij = couplings[i]
+
+         if (s1 == 0 && s2 == 0) || s1 != 0 && s2 != 0
+            ez = ez - Jij
+         else
+            ez = ez + Jij
+         end
+
+      end
+
+      hzz[a + 1]=2 * ez / (nn - 1)
+   end
+
+   return hzz
+end
+
+"""
 function which initializes the state vector to all equal elements (x magnetized)
 """
 function initstate(nn::Int)
@@ -139,7 +169,7 @@ function generate_random_couplings(nn::Int, a::Float64)
       # recording the results
       couplings[i] = sign * magnitude
    end
-   
+
    return couplings
 end
 
