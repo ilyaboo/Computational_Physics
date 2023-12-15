@@ -173,8 +173,10 @@ function generate_random_couplings(nn::Int, a::Float64)
    return couplings
 end
 
+# reading the input
 file = open("read.in", "r")
    nn = parse(Int, readline(file))      # system size (number of spins)
+   a = parse(Float64, readline(file))   # probability parameter a
    tt = parse(Float64, readline(file))  # Annealing time from s=0 to s=1
    nt = parse(Int, readline(file))      # number of time steps
    wf = parse(Int, readline(file))      # save results every wf time step
@@ -182,6 +184,55 @@ file = open("read.in", "r")
    reps = parse(Int, readline(file))    # number of random instances of the couplings to be run for each bin
 close(file)
 
+
+file = open("res.dat", "w")
+
+# iteraing over bins
+for bin in 1:bins
+
+   # creating an array for bin results
+   bin_results = zeros(Float64, 2, div(nt, wf))
+
+   # creating an array for square sum for error calculations
+   bin_results_sq = zeros(Float64, 2, div(nt, wf))
+
+   # iterating over reps for the bin
+   for rep in 1:reps
+
+      # generating new random couplings for this realization
+      sites = sitetable(nn)
+      random_couplings = generate_random_couplings(nn, a)
+      hzz = ising_with_couplings(nn, sites, random_couplings)
+
+      # performing the annealing simulation
+      sdata = anneal(nn, tt, nt, wf, hzz)
+
+      # recording the results of the realization
+      bin_results .+= sdata
+
+      # recording the squares of the data
+      bin_results_sq .+= sdata .^ 2
+   end
+
+   # computing bin averages
+   bin_averages = bin_results / reps
+
+   # calculating standard errors
+   bin_errors = sqrt.(abs.(bin_results_sq / reps - bin_averages .^ 2) / (reps - 1))
+
+   # writing bin averages to the file
+   for i in 1:div(nt, wf)
+
+      s = i / div(nt, wf)
+      println(file, s, "  ", bin_averages[1, i], "  ", bin_averages[2, i])
+  end
+end
+
+close(file)
+
+
+
+"""
 sites = sitetable(nn)
 hzz = ising(nn, sites)
 sdata = anneal(nn, tt, nt, wf, hzz)
@@ -191,3 +242,4 @@ for i = 1:div(nt, wf)
    println(file, s, "  ", sdata[1, i], "  ", sdata[2, i])
 end
 close(file)
+"""
