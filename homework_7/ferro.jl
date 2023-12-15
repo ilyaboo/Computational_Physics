@@ -1,5 +1,5 @@
 """
-function which enerates the  connectivity table (sites connected by interactions)
+function which generates the connectivity table (sites connected by interactions)
 """
 function sitetable(nn::Int)
    nb = div(nn * (nn -1 ), 2)
@@ -116,6 +116,31 @@ function anneal(nn::Int, tt::Float64, nt::Int, wf::Int, hzz)
    end
 
    return sdata
+end
+
+"""
+function which generates couplings that follow given distribution
+"""
+function generate_random_couplings(nn::Int, a::Float64)
+
+   # creating an array wto return
+   sites = sitetable(nn)
+   couplings = Array{Float64}(undef, size(sites, 2))
+
+   # iterating over couplings
+   for i in 1:length(couplings)
+
+      # randomly generating the sign according to the probability
+      sign = rand() < a ? -1 : 1
+
+      # randomly generating the magnitude
+      magnitude = rand()
+
+      # recording the results
+      couplings[i] = sign * magnitude
+   end
+   
+   return couplings
 end
 
 file = open("read.in", "r")
