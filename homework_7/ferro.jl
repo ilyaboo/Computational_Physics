@@ -185,7 +185,10 @@ file = open("read.in", "r")
 close(file)
 
 
-file = open("res.dat", "w")
+
+# initializing arrays to store cumulative results across bins
+all_bin_results = zeros(Float64, 2, div(nt, wf))
+all_bin_results_sq = zeros(Float64, 2, div(nt, wf))
 
 # iteraing over bins
 for bin in 1:bins
@@ -214,20 +217,22 @@ for bin in 1:bins
       bin_results_sq .+= sdata .^ 2
    end
 
-   # computing bin averages
-   bin_averages = bin_results / reps
-
-   # calculating standard errors
-   bin_errors = sqrt.(abs.(bin_results_sq / reps - bin_averages .^ 2) / (reps - 1))
-
-   # writing bin averages to the file
-   for i in 1:div(nt, wf)
-
-      s = i / div(nt, wf)
-      println(file, s, "  ", bin_averages[1, i], "  ", bin_errors[1, i], "  ", bin_averages[2, i], "  ", bin_errors[2, i])
-  end
+   # adding bin results to overall results
+   all_bin_results .+= bin_results / reps
+   all_bin_results_sq .+= bin_results_sq / reps
 end
 
+# calculating overall averages and errors across all bins
+overall_averages = all_bin_results / bins
+overall_errors = sqrt.(abs.(all_bin_results_sq / bins - overall_averages .^ 2) / (bins - 1))
+
+# writing averages and errors to file
+file = open("res.dat", "w")
+for i in 1:div(nt, wf)
+
+   s = i / div(nt, wf)
+   println(file, s, "  ", overall_averages[1, i], "  ", overall_errors[1, i], "  ", overall_averages[2, i], "  ", overall_errors[2, i])
+end
 close(file)
 
 
