@@ -11,29 +11,15 @@ def parse_results(filename: str, total_time: int) -> tuple[list[float], list[flo
         Es.append(vals[2])
     return times, Ps, Es
 
-def parse_results_2(filename: str) -> list[tuple[list[float], list[float], list[float], list[float], list[float]]]:
+def parse_results_2(filename: str) -> tuple[list[float], list[float], list[float], list[float], list[float]]:
         """ function which parses the ferro.jl output for part 2 of the assignment """
-        f = open(filename, "r")
-        results = []
-        times, Ps_avgs, Ps_errors, Es_avgs, Es_errors = [], [], [], [], []
 
-        # tracking last time read
-        last_time = 0
+        f = open(filename, "r")
+        times, Ps_avgs, Ps_errors, Es_avgs, Es_errors = [], [], [], [], []
 
         for line in f:
 
             vals = [float(val) for val in line.split("  ")]
-
-            # checking if reached the next bin
-            if vals[0] < last_time:
-
-                # recording bin results
-                results.append((times, Ps_avgs, Ps_errors, Es_avgs, Es_errors))
-
-                # resetting results
-                times, Ps_avgs, Ps_errors, Es_avgs, Es_errors = [], [], [], [], []
-            
-            last_time = vals[0]
 
             times.append(vals[0])
             Ps_avgs.append(vals[1])
@@ -41,10 +27,7 @@ def parse_results_2(filename: str) -> list[tuple[list[float], list[float], list[
             Es_avgs.append(vals[3])
             Es_errors.append(vals[4])
         
-        # recording bin results
-        results.append((times, Ps_avgs, Ps_errors, Es_avgs, Es_errors))
-
-        return results
+        return times, Ps_avgs, Ps_errors, Es_avgs, Es_errors
 
 def graph_Ps(folder_path: str, num_steps: list[int], total_time: int, title: str):
     """ graphs Ps vals on one graph"""
@@ -117,16 +100,15 @@ def plot_Ps_Es_errors(data: tuple[list[float], list[float], list[float], list[fl
 
 
 # part 1
-graph_Ps("./data_10", [10, 20, 25, 50, 100, 1000, 10000], total_time = 10, title = "Success Rate VS Time for T = 10")
-graph_Es("./data_10", [10, 20, 25, 50, 100, 1000, 10000], total_time = 10, title = "Excess Energy VS Time for T = 10")
+#graph_Ps("./data_10", [10, 20, 25, 50, 100, 1000, 10000], total_time = 10, title = "Success Rate VS Time for T = 10")
+#graph_Es("./data_10", [10, 20, 25, 50, 100, 1000, 10000], total_time = 10, title = "Excess Energy VS Time for T = 10")
 
-graph_Ps("./data_100", [10, 20, 25, 50, 100, 1000, 10000], total_time = 100, title = "Success Rate VS Time for T = 100")
-graph_Es("./data_10", [10, 20, 25, 50, 100, 1000, 10000], total_time = 100, title = "Excess Energy VS Time for T = 100")
+#graph_Ps("./data_100", [10, 20, 25, 50, 100, 1000, 10000], total_time = 100, title = "Success Rate VS Time for T = 100")
+#graph_Es("./data_10", [10, 20, 25, 50, 100, 1000, 10000], total_time = 100, title = "Excess Energy VS Time for T = 100")
     
 
 
 # part 2
-bins_vals = parse_results_2("res.dat", 10)
-bin_vals = bins_vals[0]
+bin_vals = parse_results_2("res.dat")
 
-plot_Ps_Es_errors(data = bin_vals, N = 8, reps = 2)
+plot_Ps_Es_errors(data = bin_vals, N = 8, T = 10, reps = 6)
