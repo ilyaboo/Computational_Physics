@@ -71,13 +71,15 @@ def graph_Es(folder_path: str, num_steps: list[int], total_time: int, title: str
     plt.legend()
     plt.show()
 
-def plot_Ps_Es_errors(data: tuple[list[float], list[float], list[float], list[float], list[float]], N: int, T: int, reps: int):
+def plot_Ps_Es_errors(data: tuple[list[float], list[float], list[float], list[float], list[float]], N: int, T: int, bins: int, reps: int):
     """ function which plots Ps vs time and Es vs time grraphs with error bars """
 
     bin_times, bin_Ps, bin_Ps_errors, bin_Es, bin_Es_errors = data
 
     # ending of the graph titles
-    ending = "for system of size N = " + str(N) + ", velocity of v = " + str(1 / T) + "\nand number of repetitions of reps = " + str(reps)
+    ending = "for system of size N = " + str(N) + ", velocity of v = " + \
+                str(1 / T) +"\n number of bins of bins = " + str(bins) + \
+                "\nand number of repetitions of reps = " + str(reps)
 
     # plotting Ps
     plt.errorbar(bin_times, bin_Ps, yerr = bin_Ps_errors, markersize = 3, linestyle = "--", fmt = 'o', ecolor = 'red', capsize = 1)
@@ -109,6 +111,5 @@ def plot_Ps_Es_errors(data: tuple[list[float], list[float], list[float], list[fl
 
 
 # part 2
-bin_vals = parse_results_2("res.dat")
-
-plot_Ps_Es_errors(data = bin_vals, N = 8, T = 10, reps = 6)
+#bin_vals = parse_results_2("res.dat")
+#plot_Ps_Es_errors(data = bin_vals, N = 4, T = 1000, bins = 20, reps = 2)
