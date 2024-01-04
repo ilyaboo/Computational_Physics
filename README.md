@@ -1,9 +1,9 @@
 # Computational Physics
 
-## Course Homeworks
+## Course Projects
 This repository contains my implementations of various physics simulations done for the Computational Physics course.
 
-## Homework Overview
+## Projects Overview
 Each project in this course focuses on a specific topic in computational physics, demonstrating the application of numerical methods and computational thinking to solve complex physical problems. Below is an overview of the seven homework topics.
 
 ### Project 1: Test of a Random Number Generator Using Random Walks
